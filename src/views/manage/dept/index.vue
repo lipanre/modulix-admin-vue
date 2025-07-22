@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>首页</div>
+  <div>部门管理</div>
 </template>
 
 <style scoped></style>

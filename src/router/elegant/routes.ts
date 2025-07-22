@@ -74,5 +74,96 @@ export const generatedRoutes: GeneratedRoute[] = [
       constant: true,
       hideInMenu: true
     }
+  },
+  {
+    name: 'manage',
+    path: '/manage',
+    component: 'layout.base',
+    meta: {
+      title: 'manage',
+      i18nKey: 'route.manage',
+      order: 2
+    },
+    children: [
+      {
+        name: 'manage_dept',
+        path: '/manage/dept',
+        component: 'view.manage_dept',
+        meta: {
+          title: 'manage_dept',
+          i18nKey: 'route.manage_dept',
+          order: 5
+        }
+      },
+      {
+        name: 'manage_dict',
+        path: '/manage/dict',
+        component: 'view.manage_dict',
+        meta: {
+          title: 'manage_dict',
+          i18nKey: 'route.manage_dict',
+          order: 4
+        }
+      },
+      {
+        name: 'manage_log',
+        path: '/manage/log',
+        meta: {
+          title: 'manage_log',
+          i18nKey: 'route.manage_log',
+          order: 6
+        },
+        children: [
+          {
+            name: 'manage_log_access',
+            path: '/manage/log/access',
+            component: 'view.manage_log_access',
+            meta: {
+              title: 'manage_log_access',
+              i18nKey: 'route.manage_log_access'
+            }
+          },
+          {
+            name: 'manage_log_login',
+            path: '/manage/log/login',
+            component: 'view.manage_log_login',
+            meta: {
+              title: 'manage_log_login',
+              i18nKey: 'route.manage_log_login'
+            }
+          }
+        ]
+      },
+      {
+        name: 'manage_menu',
+        path: '/manage/menu',
+        component: 'view.manage_menu',
+        meta: {
+          title: 'manage_menu',
+          i18nKey: 'route.manage_menu',
+          order: 3
+        }
+      },
+      {
+        name: 'manage_role',
+        path: '/manage/role',
+        component: 'view.manage_role',
+        meta: {
+          title: 'manage_role',
+          i18nKey: 'route.manage_role',
+          order: 2
+        }
+      },
+      {
+        name: 'manage_user',
+        path: '/manage/user',
+        component: 'view.manage_user',
+        meta: {
+          title: 'manage_user',
+          i18nKey: 'route.manage_user',
+          order: 1
+        }
+      }
+    ]
   }
 ];

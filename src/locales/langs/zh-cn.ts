@@ -166,7 +166,16 @@ const local: App.I18n.Schema = {
     404: '页面不存在',
     500: '服务器错误',
     'iframe-page': '外链页面',
-    home: '首页'
+    home: '首页',
+    manage: '系统管理',
+    manage_user: '用户管理',
+    manage_menu: '菜单管理',
+    manage_role: '角色管理',
+    manage_dict: '字典管理',
+    manage_dept: '部门管理',
+    manage_log: '日志管理',
+    manage_log_access: '访问日志',
+    manage_log_login: '登录日志'
   },
   page: {
     login: {
