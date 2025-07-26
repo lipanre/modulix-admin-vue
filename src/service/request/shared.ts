@@ -10,7 +10,7 @@ export function getAuthorization() {
 
   return {
     [header as string]: token,
-    clientId
+    'client-id': clientId
   };
 }
 
