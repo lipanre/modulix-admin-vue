@@ -8,6 +8,7 @@ import GlobalBreadcrumb from '../global-breadcrumb/index.vue';
 import GlobalSearch from '../global-search/index.vue';
 import ThemeButton from './components/theme-button.vue';
 import UserAvatar from './components/user-avatar.vue';
+import {ref} from "vue";
 
 defineOptions({
   name: 'GlobalHeader'
@@ -27,6 +28,8 @@ defineProps<Props>();
 const appStore = useAppStore();
 const themeStore = useThemeStore();
 const { isFullscreen, toggle } = useFullscreen();
+
+const showThemeConfigButton = ref(false);
 </script>
 
 <template>
@@ -51,7 +54,7 @@ const { isFullscreen, toggle } = useFullscreen();
         :is-dark="themeStore.darkMode"
         @switch="themeStore.toggleThemeScheme"
       />
-      <ThemeButton />
+      <ThemeButton v-if="showThemeConfigButton" />
       <UserAvatar />
     </div>
   </DarkModeContainer>
