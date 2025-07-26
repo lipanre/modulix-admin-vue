@@ -5,9 +5,13 @@ import type { RequestInstanceState } from './type';
 
 export function getAuthorization() {
   const token = localStg.get('token');
-  const Authorization = token ? `Bearer ${token}` : null;
+  const header = localStg.get('header');
+  const clientId = localStg.get('clientId');
 
-  return Authorization;
+  return {
+    [header as string]: token,
+    clientId
+  };
 }
 
 /** refresh token */

@@ -57,11 +57,14 @@ declare namespace Api {
     interface LoginToken {
       token: string;
       refreshToken: string;
+      clientId: string;
+      expire: number;
+      header: string;
     }
 
     interface UserInfo {
-      userId: string;
-      userName: string;
+      id: string;
+      username: string;
       roles: string[];
       buttons: string[];
     }

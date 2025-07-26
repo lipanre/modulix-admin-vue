@@ -39,5 +39,20 @@ declare namespace StorageType {
     };
     /** The last login user id */
     lastLoginUserId: string;
+
+    /**
+     * 客户端id
+     */
+    clientId: string;
+
+    /**
+     * token请求头
+     */
+    header: string;
+
+    /**
+     * token过期时间
+     */
+    expire: number;
   }
 }

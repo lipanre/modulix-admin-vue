@@ -566,21 +566,16 @@ declare namespace App {
     }
 
     /** The backend service config */
-    interface ServiceConfig extends ServiceConfigItem {
-      /** Other backend service config */
-      other: OtherServiceConfigItem[];
-    }
+    type ServiceConfig = ServiceConfigItem
 
-    interface SimpleServiceConfig extends Pick<ServiceConfigItem, 'baseURL'> {
-      other: Record<OtherBaseURLKey, string>;
-    }
+    type SimpleServiceConfig = Pick<ServiceConfigItem, 'baseURL'>
 
     /** The backend service response data */
     type Response<T = unknown> = {
       /** The backend service response code */
       code: string;
       /** The backend service response message */
-      msg: string;
+      message: string;
       /** The backend service response data */
       data: T;
     };
