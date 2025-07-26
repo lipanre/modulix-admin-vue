@@ -29,6 +29,7 @@ const appStore = useAppStore();
 const themeStore = useThemeStore();
 const { isFullscreen, toggle } = useFullscreen();
 
+// 隐藏主题配置按钮
 const showThemeConfigButton = ref(false);
 </script>
 
