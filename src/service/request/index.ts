@@ -20,7 +20,6 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
     async onRequest(config) {
       const header = getAuthorization();
       Object.assign(config.headers, { ...header });
-
       return config;
     },
     isBackendSuccess(response) {
