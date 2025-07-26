@@ -11,7 +11,10 @@ const { baseURL } = getServiceBaseURL(import.meta.env, isHttpProxy);
 
 export const request = createFlatRequest<App.Service.Response, RequestInstanceState>(
   {
-    baseURL
+    baseURL,
+    headers: {
+      'client-type': 'admin-account'
+    }
   },
   {
     async onRequest(config) {
