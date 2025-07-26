@@ -19,7 +19,6 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const appStore = useAppStore();
 const themeStore = useThemeStore();
 
 interface LoginModule {
@@ -27,15 +26,17 @@ interface LoginModule {
   component: Component;
 }
 
-const moduleMap: Record<UnionKey.LoginModule, LoginModule> = {
+const { VITE_APP_NAME } = import.meta.env;
+
+const moduleMap: Record<'pwd-login', LoginModule> = {
   'pwd-login': { label: loginModuleRecord['pwd-login'], component: PwdLogin },
-  'code-login': { label: loginModuleRecord['code-login'], component: CodeLogin },
-  register: { label: loginModuleRecord.register, component: Register },
-  'reset-pwd': { label: loginModuleRecord['reset-pwd'], component: ResetPwd },
-  'bind-wechat': { label: loginModuleRecord['bind-wechat'], component: BindWechat }
+  // 'code-login': { label: loginModuleRecord['code-login'], component: CodeLogin },
+  // register: { label: loginModuleRecord.register, component: Register },
+  // 'reset-pwd': { label: loginModuleRecord['reset-pwd'], component: ResetPwd },
+  // 'bind-wechat': { label: loginModuleRecord['bind-wechat'], component: BindWechat }
 };
 
-const activeModule = computed(() => moduleMap[props.module || 'pwd-login']);
+const activeModule = computed(() => moduleMap['pwd-login']);
 
 const bgThemeColor = computed(() =>
   themeStore.darkMode ? getPaletteColorByNumber(themeStore.themeColor, 600) : themeStore.themeColor
@@ -57,20 +58,13 @@ const bgColor = computed(() => {
       <div class="w-400px lt-sm:w-300px">
         <header class="flex-y-center justify-between">
           <SystemLogo class="text-64px text-primary lt-sm:text-48px" />
-          <h3 class="text-28px text-primary font-500 lt-sm:text-22px">{{ $t('system.title') }}</h3>
+          <h3 class="text-28px text-primary font-500 lt-sm:text-22px">{{ VITE_APP_NAME }}</h3>
           <div class="i-flex-col">
             <ThemeSchemaSwitch
               :theme-schema="themeStore.themeScheme"
               :show-tooltip="false"
               class="text-20px lt-sm:text-18px"
               @switch="themeStore.toggleThemeScheme"
-            />
-            <LangSwitch
-              v-if="themeStore.header.multilingual.visible"
-              :lang="appStore.locale"
-              :lang-options="appStore.localeOptions"
-              :show-tooltip="false"
-              @change-lang="appStore.changeLocale"
             />
           </div>
         </header>
