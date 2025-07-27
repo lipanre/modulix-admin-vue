@@ -1,4 +1,4 @@
-import {request} from '../request';
+import { request } from '../request';
 
 /**
  * Login
@@ -44,8 +44,8 @@ export const handleLogout = async () => {
   return request<boolean>({
     url: '/auth/logout',
     method: 'post'
-  })
-}
+  });
+};
 
 /**
  * return custom backend error
@@ -54,5 +54,5 @@ export const handleLogout = async () => {
  * @param msg error message
  */
 export function fetchCustomBackendError(code: string, msg: string) {
-  return request({url: '/auth/error', params: {code, msg}});
+  return request({ url: '/auth/error', params: { code, msg } });
 }
