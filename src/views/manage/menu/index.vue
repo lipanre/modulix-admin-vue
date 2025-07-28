@@ -5,10 +5,9 @@ import { NButton, NPopconfirm, NTag } from 'naive-ui';
 import { useBoolean } from '@sa/hooks';
 import { yesOrNoRecord } from '@/constants/common';
 import { enableStatusRecord, menuTypeRecord } from '@/constants/business';
-import { fetchGetAllPages, fetchGetMenuList } from '@/service/api';
+import { fetchGetMenuList } from '@/service/api';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { $t } from '@/locales';
 import SvgIcon from '@/components/custom/svg-icon.vue';
 import MenuOperateModal, { type OperateType } from './modules/menu-operate-modal.vue';
 
@@ -123,7 +122,7 @@ const { columns, columnChecks, data, loading, pagination, getData, getDataByPage
           N: 'default'
         };
 
-        const label = $t(yesOrNoRecord[hide]);
+        const label = yesOrNoRecord[hide];
 
         return <NTag type={tagMap[hide]}>{label}</NTag>;
       }
@@ -150,18 +149,18 @@ const { columns, columnChecks, data, loading, pagination, getData, getDataByPage
         <div class="flex-center justify-end gap-8px">
           {row.menuType === '1' && (
             <NButton type="primary" ghost size="small" onClick={() => handleAddChildMenu(row)}>
-              {$t('page.manage.menu.addChildMenu')}
+              新增子菜单
             </NButton>
           )}
           <NButton type="primary" ghost size="small" onClick={() => handleEdit(row)}>
-            {$t('common.edit')}
+            编辑
           </NButton>
           <NPopconfirm onPositiveClick={() => handleDelete(row.id)}>
             {{
-              default: () => $t('common.confirmDelete'),
+              default: () => '确认删除吗?',
               trigger: () => (
                 <NButton type="error" ghost size="small">
-                  {$t('common.delete')}
+                  删除
                 </NButton>
               )
             }}
