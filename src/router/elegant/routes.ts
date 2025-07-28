@@ -47,7 +47,7 @@ export const generatedRoutes: GeneratedRoute[] = [
       title: 'home',
       i18nKey: 'route.home',
       icon: 'mdi:monitor-dashboard',
-      order: 1
+      sort: 1
     }
   },
   {
@@ -82,7 +82,7 @@ export const generatedRoutes: GeneratedRoute[] = [
     meta: {
       title: 'manage',
       i18nKey: 'route.manage',
-      order: 2
+      sort: 2
     },
     children: [
       {
@@ -92,7 +92,7 @@ export const generatedRoutes: GeneratedRoute[] = [
         meta: {
           title: 'manage_dept',
           i18nKey: 'route.manage_dept',
-          order: 5
+          sort: 5
         }
       },
       {
@@ -102,7 +102,7 @@ export const generatedRoutes: GeneratedRoute[] = [
         meta: {
           title: 'manage_dict',
           i18nKey: 'route.manage_dict',
-          order: 4
+          sort: 4
         }
       },
       {
@@ -111,7 +111,7 @@ export const generatedRoutes: GeneratedRoute[] = [
         meta: {
           title: 'manage_log',
           i18nKey: 'route.manage_log',
-          order: 6
+          sort: 6
         },
         children: [
           {
@@ -141,7 +141,7 @@ export const generatedRoutes: GeneratedRoute[] = [
         meta: {
           title: 'manage_menu',
           i18nKey: 'route.manage_menu',
-          order: 3
+          sort: 3
         }
       },
       {
@@ -151,7 +151,7 @@ export const generatedRoutes: GeneratedRoute[] = [
         meta: {
           title: 'manage_role',
           i18nKey: 'route.manage_role',
-          order: 2
+          sort: 2
         }
       },
       {
@@ -161,7 +161,7 @@ export const generatedRoutes: GeneratedRoute[] = [
         meta: {
           title: 'manage_user',
           i18nKey: 'route.manage_user',
-          order: 1
+          sort: 1
         }
       }
     ]

@@ -1,29 +1,29 @@
 import { transformRecordToOption } from '@/utils/common';
 
-export const enableStatusRecord: Record<Api.Common.EnableStatus, App.I18n.I18nKey> = {
-  '1': '启用',
-  '2': '禁用'
+export const enableStatusRecord: Record<CommonType.EnableStatus, string> = {
+  enable: '启用',
+  disable: '禁用'
 };
 
 export const enableStatusOptions = transformRecordToOption(enableStatusRecord);
 
-export const userGenderRecord: Record<Api.SystemManage.UserGender, App.I18n.I18nKey> = {
-  '1': '男',
-  '2': '女'
+export const userGenderRecord: Record<Api.SystemManage.UserGender, string> = {
+  male: '男',
+  female: '女'
 };
 
 export const userGenderOptions = transformRecordToOption(userGenderRecord);
 
-export const menuTypeRecord: Record<Api.SystemManage.MenuType, App.I18n.I18nKey> = {
-  '1': '目录',
-  '2': '菜单'
+export const menuTypeRecord: Record<Api.SystemManage.MenuType, string> = {
+  dir: '目录',
+  menu: '菜单'
 };
 
 export const menuTypeOptions = transformRecordToOption(menuTypeRecord);
 
-export const menuIconTypeRecord: Record<Api.SystemManage.IconType, App.I18n.I18nKey> = {
-  '1': 'iconify图标',
-  '2': '本地图标'
+export const menuIconTypeRecord: Record<Api.SystemManage.IconType, string> = {
+  iconify: 'iconify图标',
+  local: '本地图标'
 };
 
 export const menuIconTypeOptions = transformRecordToOption(menuIconTypeRecord);

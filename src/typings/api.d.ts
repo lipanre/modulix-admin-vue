@@ -23,14 +23,6 @@ declare namespace Api {
     /** common search params of table */
     type CommonSearchParams = Pick<Common.PaginatingCommonParams, 'current' | 'size'>;
 
-    /**
-     * enable status
-     *
-     * - "1": enabled
-     * - "2": disabled
-     */
-    type EnableStatus = '1' | '2';
-
     /** common record */
     type CommonRecord<T = any> = {
       /** record id */
@@ -44,7 +36,7 @@ declare namespace Api {
       /** record update time */
       updateTime: string;
       /** record status */
-      status: EnableStatus | null;
+      status: boolean | null;
     } & T;
   }
 
@@ -86,5 +78,51 @@ declare namespace Api {
       routes: MenuRoute[];
       home: import('@elegant-router/types').LastLevelRouteKey;
     }
+  }
+
+  namespace SystemManage {
+    type UserGender = 'male' | 'female';
+
+    type IconType = 'iconify' | 'local';
+
+    type MenuPropsOfRoute = Pick<
+      import('vue-router').RouteMeta,
+      | 'i18nKey'
+      | 'keepAlive'
+      | 'constant'
+      | 'sort'
+      | 'href'
+      | 'hideInMenu'
+      | 'activeMenu'
+      | 'multiTab'
+      | 'fixedIndexInTab'
+      | 'query'
+    >;
+
+    type Menu = Common.CommonRecord<{
+      /** parent menu id */
+      parentId: number;
+      /** menu type */
+      type: MenuType;
+      /** menu name */
+      name: string;
+      /** route name */
+      routeName: string;
+      /** route path */
+      routePath: string;
+      /** component */
+      component?: string;
+      /** iconify icon name or local icon name */
+      icon: string;
+      /** icon type */
+      iconType: IconType;
+      /** buttons */
+      buttons?: MenuButton[] | null;
+      /** children menu */
+      children?: Menu[] | null;
+    }> &
+      MenuPropsOfRoute;
+
+    type MenuType = 'dir' | 'menu';
   }
 }

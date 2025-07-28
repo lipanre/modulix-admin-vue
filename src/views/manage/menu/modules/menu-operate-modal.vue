@@ -2,10 +2,9 @@
 import { computed, ref, watch } from 'vue';
 import type { SelectOption } from 'naive-ui';
 import { enableStatusOptions, menuIconTypeOptions, menuTypeOptions } from '@/constants/business';
-import { fetchGetAllRoles } from '@/service/api';
+import { createMenu, fetchGetAllRoles } from '@/service/api';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import { getLocalIcons } from '@/utils/icon';
-import { $t } from '@/locales';
 import SvgIcon from '@/components/custom/svg-icon.vue';
 import {
   getLayoutAndPage,
@@ -56,12 +55,12 @@ const title = computed(() => {
 
 type Model = Pick<
   Api.SystemManage.Menu,
-  | 'menuType'
-  | 'menuName'
+  | 'type'
+  | 'name'
   | 'routeName'
   | 'routePath'
   | 'component'
-  | 'order'
+  | 'sort'
   | 'i18nKey'
   | 'icon'
   | 'iconType'
@@ -86,8 +85,8 @@ const model = ref(createDefaultModel());
 
 function createDefaultModel(): Model {
   return {
-    menuType: '1',
-    menuName: '',
+    type: 'dir',
+    name: '',
     routeName: '',
     routePath: '',
     pathParam: '',
@@ -96,12 +95,12 @@ function createDefaultModel(): Model {
     page: '',
     i18nKey: null,
     icon: '',
-    iconType: '1',
+    iconType: 'iconify',
     parentId: 0,
-    status: '1',
+    status: 'enable',
     keepAlive: false,
     constant: false,
-    order: 0,
+    sort: 0,
     href: null,
     hideInMenu: false,
     activeMenu: null,
@@ -112,10 +111,10 @@ function createDefaultModel(): Model {
   };
 }
 
-type RuleKey = Extract<keyof Model, 'menuName' | 'status' | 'routeName' | 'routePath'>;
+type RuleKey = Extract<keyof Model, 'name' | 'status' | 'routeName' | 'routePath'>;
 
 const rules: Record<RuleKey, App.Global.FormRule> = {
-  menuName: defaultRequiredRule,
+  name: defaultRequiredRule,
   status: defaultRequiredRule,
   routeName: defaultRequiredRule,
   routePath: defaultRequiredRule
@@ -136,7 +135,7 @@ const localIconOptions = localIcons.map<SelectOption>(item => ({
 
 const showLayout = computed(() => model.value.parentId === 0);
 
-const showPage = computed(() => model.value.menuType === '2');
+const showPage = computed(() => model.value.type === 'MENU');
 
 const pageOptions = computed(() => {
   const allPages = [...props.allPages];
@@ -257,9 +256,18 @@ async function handleSubmit() {
   console.log('params: ', params);
 
   // request
-  window.$message?.success($t('common.updateSuccess'));
-  closeDrawer();
-  emit('submitted');
+  createMenu(params).then(
+    response => {
+      if (response.data) {
+        window.$message?.success('操作成功');
+        closeDrawer();
+        emit('submitted');
+      }
+    },
+    () => {
+      window.$message.error('操作失败');
+    }
+  );
 }
 
 watch(visible, () => {
@@ -285,12 +293,12 @@ watch(
       <NForm ref="formRef" :model="model" :rules="rules" label-placement="left" :label-width="100">
         <NGrid responsive="screen" item-responsive>
           <NFormItemGi span="24 m:12" label="菜单类型" path="menuType">
-            <NRadioGroup v-model:value="model.menuType" :disabled="disabledMenuType">
-              <NRadio v-for="item in menuTypeOptions" :key="item.value" :value="item.value" :label="$t(item.label)" />
+            <NRadioGroup v-model:value="model.type" :disabled="disabledMenuType">
+              <NRadio v-for="item in menuTypeOptions" :key="item.value" :value="item.value" :label="item.label" />
             </NRadioGroup>
           </NFormItemGi>
           <NFormItemGi span="24 m:12" label="菜单名称" path="menuName">
-            <NInput v-model:value="model.menuName" placeholder="请输入菜单名称" />
+            <NInput v-model:value="model.name" placeholder="请输入菜单名称" />
           </NFormItemGi>
           <NFormItemGi span="24 m:12" label="路由名称" path="routeName">
             <NInput v-model:value="model.routeName" placeholder="请输入路由名称" />
@@ -311,38 +319,28 @@ watch(
             <NInput v-model:value="model.i18nKey" placeholder="请输入国际化key" />
           </NFormItemGi>
           <NFormItemGi span="24 m:12" label="排序" path="order">
-            <NInputNumber v-model:value="model.order" class="w-full" placeholder="请输入排序号" />
+            <NInputNumber v-model:value="model.sort" class="w-full" placeholder="请输入排序号" />
           </NFormItemGi>
           <NFormItemGi span="24 m:12" label="图标类型" path="iconType">
             <NRadioGroup v-model:value="model.iconType">
-              <NRadio
-                v-for="item in menuIconTypeOptions"
-                :key="item.value"
-                :value="item.value"
-                :label="$t(item.label)"
-              />
+              <NRadio v-for="item in menuIconTypeOptions" :key="item.value" :value="item.value" :label="item.label" />
             </NRadioGroup>
           </NFormItemGi>
           <NFormItemGi span="24 m:12" label="图标" path="icon">
-            <template v-if="model.iconType === '1'">
+            <template v-if="model.iconType === 'iconify'">
               <NInput v-model:value="model.icon" placeholder="请输入图标" class="flex-1">
                 <template #suffix>
                   <SvgIcon v-if="model.icon" :icon="model.icon" class="text-icon" />
                 </template>
               </NInput>
             </template>
-            <template v-if="model.iconType === '2'">
+            <template v-if="model.iconType === 'local'">
               <NSelect v-model:value="model.icon" placeholder="请选择本地图标" :options="localIconOptions" />
             </template>
           </NFormItemGi>
           <NFormItemGi span="24 m:12" label="菜单状态" path="status">
             <NRadioGroup v-model:value="model.status">
-              <NRadio
-                v-for="item in enableStatusOptions"
-                :key="item.value"
-                :value="item.value"
-                :label="$t(item.label)"
-              />
+              <NRadio v-for="item in enableStatusOptions" :key="item.value" :value="item.value" :label="item.label" />
             </NRadioGroup>
           </NFormItemGi>
           <NFormItemGi span="24 m:12" label="缓存路由" path="keepAlive">

@@ -20,6 +20,10 @@ const wrapperRef = ref<HTMLElement | null>(null);
 
 const { columns, columnChecks, data, loading, pagination, getData, getDataByPage } = useTable({
   apiFn: fetchGetMenuList,
+  apiParams: {
+    current: 1,
+    size: -1
+  },
   columns: () => [
     {
       type: 'selection',
@@ -29,35 +33,33 @@ const { columns, columnChecks, data, loading, pagination, getData, getDataByPage
     {
       key: 'id',
       title: 'ID',
-      align: 'center'
+      align: 'center',
+      minWidth: 370
     },
     {
-      key: 'menuType',
+      key: 'type',
       title: '菜单类型',
       align: 'center',
       width: 80,
       render: row => {
         const tagMap: Record<Api.SystemManage.MenuType, NaiveUI.ThemeColor> = {
-          1: 'default',
-          2: 'primary'
+          dir: 'default',
+          menu: 'primary'
         };
 
-        const label = $t(menuTypeRecord[row.menuType]);
+        const label = menuTypeRecord[row.type];
 
-        return <NTag type={tagMap[row.menuType]}>{label}</NTag>;
+        return <NTag type={tagMap[row.type]}>{label}</NTag>;
       }
     },
     {
-      key: 'menuName',
+      key: 'name',
       title: '菜单名称',
       align: 'center',
       minWidth: 120,
       render: row => {
-        const { i18nKey, menuName } = row;
-
-        const label = i18nKey ? $t(i18nKey) : menuName;
-
-        return <span>{label}</span>;
+        const { name } = row;
+        return <span>{name}</span>;
       }
     },
     {
@@ -66,9 +68,8 @@ const { columns, columnChecks, data, loading, pagination, getData, getDataByPage
       align: 'center',
       width: 60,
       render: row => {
-        const icon = row.iconType === '1' ? row.icon : undefined;
-
-        const localIcon = row.iconType === '2' ? row.icon : undefined;
+        const icon = row.iconType === 'iconify' ? row.icon : undefined;
+        const localIcon = row.iconType === 'local' ? row.icon : undefined;
 
         return (
           <div class="flex-center">
@@ -84,7 +85,7 @@ const { columns, columnChecks, data, loading, pagination, getData, getDataByPage
       minWidth: 120
     },
     {
-      key: 'routePath',
+      key: 'path',
       title: '路由路径',
       align: 'center',
       minWidth: 120
@@ -99,12 +100,12 @@ const { columns, columnChecks, data, loading, pagination, getData, getDataByPage
           return null;
         }
 
-        const tagMap: Record<Api.Common.EnableStatus, NaiveUI.ThemeColor> = {
-          1: 'success',
-          2: 'warning'
+        const tagMap: Record<CommonType.EnableStatus, NaiveUI.ThemeColor> = {
+          enable: 'success',
+          disable: 'warning'
         };
 
-        const label = $t(enableStatusRecord[row.status]);
+        const label = enableStatusRecord[row.status];
 
         return <NTag type={tagMap[row.status]}>{label}</NTag>;
       }
@@ -134,7 +135,7 @@ const { columns, columnChecks, data, loading, pagination, getData, getDataByPage
       align: 'center'
     },
     {
-      key: 'order',
+      key: 'sort',
       title: '排序',
       align: 'center',
       width: 60
@@ -143,6 +144,7 @@ const { columns, columnChecks, data, loading, pagination, getData, getDataByPage
       key: 'operate',
       title: '操作',
       align: 'center',
+      fixed: 'right',
       width: 230,
       render: row => (
         <div class="flex-center justify-end gap-8px">
@@ -214,8 +216,9 @@ function handleAddChildMenu(item: Api.SystemManage.Menu) {
 const allPages = ref<string[]>([]);
 
 async function getAllPages() {
-  const { data: pages } = await fetchGetAllPages();
-  allPages.value = pages || [];
+  // const { data: pages } = await fetchGetAllPages();
+  // allPages.value = pages || [];
+  allPages.value = [];
 }
 
 function init() {
