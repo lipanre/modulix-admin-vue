@@ -205,18 +205,32 @@ declare namespace App {
        * Equal to the route key
        */
       key: string;
+      /** 菜单类型 **/
+      type?: Api.SystemManage.MenuType;
+      /** 图标类型**/
+      iconType?: Api.SystemManage.IconType;
       /** The menu label */
       label: string;
       /** The menu i18n key */
       i18nKey?: I18n.I18nKey | null;
       /** The route key */
       routeKey: RouteKey;
+      /** 路由名称**/
+      routeName?: string;
       /** The route path */
       routePath: RoutePath;
       /** The menu icon */
-      icon?: () => VNode;
+      icon?: () => VNode | string;
       /** The menu children */
       children?: Menu[];
+      /** 在菜单中隐藏**/
+      hideInMenu?: boolean;
+      /** 路由路径**/
+      path?: string;
+      /** 父级id **/
+      parentId?: string;
+      /* 排序 */
+      sort?: number;
     };
 
     type Breadcrumb = Omit<Menu, 'children'> & {
@@ -566,9 +580,9 @@ declare namespace App {
     }
 
     /** The backend service config */
-    type ServiceConfig = ServiceConfigItem
+    type ServiceConfig = ServiceConfigItem;
 
-    type SimpleServiceConfig = Pick<ServiceConfigItem, 'baseURL'>
+    type SimpleServiceConfig = Pick<ServiceConfigItem, 'baseURL'>;
 
     /** The backend service response data */
     type Response<T = unknown> = {

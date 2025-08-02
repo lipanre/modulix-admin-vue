@@ -2,114 +2,40 @@
 import { computed, ref, watch } from 'vue';
 import type { SelectOption } from 'naive-ui';
 import { enableStatusOptions, menuIconTypeOptions, menuTypeOptions } from '@/constants/business';
-import { createMenu, fetchGetAllRoles } from '@/service/api';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import { getLocalIcons } from '@/utils/icon';
 import SvgIcon from '@/components/custom/svg-icon.vue';
+import type { Model } from '@/views/manage/menu/modules/typing';
+import { layoutOptions } from '@/views/manage/menu/modules/typing';
 import {
-  getLayoutAndPage,
-  getPathParamFromRoutePath,
+  createDefaultModel,
   getRoutePathByRouteName,
   getRoutePathWithParam,
   transformLayoutAndPageToComponent
 } from './shared';
 
-defineOptions({
-  name: 'MenuOperateModal'
-});
-
-export type OperateType = NaiveUI.TableOperateType | 'addChild';
-
 interface Props {
-  /** the type of operation */
-  operateType: OperateType;
-  /** the edit menu data or the parent menu data when adding a child menu */
-  rowData?: Api.SystemManage.Menu | null;
   /** all pages */
   allPages: string[];
+  /** 标题 **/
+  title: string;
+  /** 关闭菜单类型选项 **/
+  disabledMenuType?: boolean;
 }
 
 const props = defineProps<Props>();
 
-interface Emits {
-  (e: 'submitted'): void;
-}
-
-const emit = defineEmits<Emits>();
+const emit = defineEmits<{
+  submitted: [Partial<Api.SystemManage.Menu>];
+}>();
 
 const visible = defineModel<boolean>('visible', {
   default: false
 });
+const model = defineModel<Model>('model', { required: true });
 
 const { formRef, validate, restoreValidation } = useNaiveForm();
 const { defaultRequiredRule } = useFormRules();
-
-const title = computed(() => {
-  const titles: Record<OperateType, string> = {
-    add: '新增菜单',
-    addChild: '新增子菜单',
-    edit: '编辑菜单'
-  };
-  return titles[props.operateType];
-});
-
-type Model = Pick<
-  Api.SystemManage.Menu,
-  | 'type'
-  | 'name'
-  | 'routeName'
-  | 'routePath'
-  | 'component'
-  | 'sort'
-  | 'i18nKey'
-  | 'icon'
-  | 'iconType'
-  | 'status'
-  | 'parentId'
-  | 'keepAlive'
-  | 'constant'
-  | 'href'
-  | 'hideInMenu'
-  | 'activeMenu'
-  | 'multiTab'
-  | 'fixedIndexInTab'
-> & {
-  query: NonNullable<Api.SystemManage.Menu['query']>;
-  buttons: NonNullable<Api.SystemManage.Menu['buttons']>;
-  layout: string;
-  page: string;
-  pathParam: string;
-};
-
-const model = ref(createDefaultModel());
-
-function createDefaultModel(): Model {
-  return {
-    type: 'dir',
-    name: '',
-    routeName: '',
-    routePath: '',
-    pathParam: '',
-    component: '',
-    layout: '',
-    page: '',
-    i18nKey: null,
-    icon: '',
-    iconType: 'iconify',
-    parentId: 0,
-    status: 'enable',
-    keepAlive: false,
-    constant: false,
-    sort: 0,
-    href: null,
-    hideInMenu: false,
-    activeMenu: null,
-    multiTab: false,
-    fixedIndexInTab: null,
-    query: [],
-    buttons: []
-  };
-}
 
 type RuleKey = Extract<keyof Model, 'name' | 'status' | 'routeName' | 'routePath'>;
 
@@ -119,8 +45,6 @@ const rules: Record<RuleKey, App.Global.FormRule> = {
   routeName: defaultRequiredRule,
   routePath: defaultRequiredRule
 };
-
-const disabledMenuType = computed(() => props.operateType === 'edit');
 
 const localIcons = getLocalIcons();
 const localIconOptions = localIcons.map<SelectOption>(item => ({
@@ -133,9 +57,9 @@ const localIconOptions = localIcons.map<SelectOption>(item => ({
   value: item
 }));
 
-const showLayout = computed(() => model.value.parentId === 0);
+const showLayout = computed(() => !model.value.parentId);
 
-const showPage = computed(() => model.value.type === 'MENU');
+const showPage = computed(() => model.value.type === 'menu');
 
 const pageOptions = computed(() => {
   const allPages = [...props.allPages];
@@ -152,52 +76,8 @@ const pageOptions = computed(() => {
   return opts;
 });
 
-const layoutOptions: CommonType.Option[] = [
-  {
-    label: 'base',
-    value: 'base'
-  },
-  {
-    label: 'blank',
-    value: 'blank'
-  }
-];
-
-/** the enabled role options */
-const roleOptions = ref<CommonType.Option<string>[]>([]);
-
-async function getRoleOptions() {
-  const { error, data } = await fetchGetAllRoles();
-
-  if (!error) {
-    const options = data.map(item => ({
-      label: item.roleName,
-      value: item.roleCode
-    }));
-
-    roleOptions.value = [...options];
-  }
-}
-
 function handleInitModel() {
   model.value = createDefaultModel();
-
-  if (!props.rowData) return;
-
-  if (props.operateType === 'addChild') {
-    const { id } = props.rowData;
-
-    Object.assign(model.value, { parentId: id });
-  }
-
-  if (props.operateType === 'edit') {
-    const { component, ...rest } = props.rowData;
-
-    const { layout, page } = getLayoutAndPage(component);
-    const { path, param } = getPathParamFromRoutePath(rest.routePath);
-
-    Object.assign(model.value, rest, { layout, page, routePath: path, pathParam: param });
-  }
 
   if (!model.value.query) {
     model.value.query = [];
@@ -232,7 +112,6 @@ function handleCreateButton() {
     code: '',
     desc: ''
   };
-
   return buttonItem;
 }
 
@@ -250,31 +129,14 @@ function getSubmitParams() {
 
 async function handleSubmit() {
   await validate();
-
   const params = getSubmitParams();
-
-  console.log('params: ', params);
-
-  // request
-  createMenu(params).then(
-    response => {
-      if (response.data) {
-        window.$message?.success('操作成功');
-        closeDrawer();
-        emit('submitted');
-      }
-    },
-    () => {
-      window.$message.error('操作失败');
-    }
-  );
+  emit('submitted', params);
 }
 
 watch(visible, () => {
   if (visible.value) {
     handleInitModel();
     restoreValidation();
-    getRoleOptions();
   }
 });
 
@@ -288,12 +150,12 @@ watch(
 </script>
 
 <template>
-  <NModal v-model:show="visible" :title="title" preset="card" class="w-800px">
+  <NModal v-model:show="visible" :title="props.title" preset="card" class="w-800px">
     <NScrollbar class="h-480px pr-20px">
       <NForm ref="formRef" :model="model" :rules="rules" label-placement="left" :label-width="100">
         <NGrid responsive="screen" item-responsive>
           <NFormItemGi span="24 m:12" label="菜单类型" path="menuType">
-            <NRadioGroup v-model:value="model.type" :disabled="disabledMenuType">
+            <NRadioGroup v-model:value="model.type" :disabled="props.disabledMenuType">
               <NRadio v-for="item in menuTypeOptions" :key="item.value" :value="item.value" :label="item.label" />
             </NRadioGroup>
           </NFormItemGi>
@@ -396,7 +258,7 @@ watch(
               <template #action="{ index, create, remove }">
                 <NSpace class="ml-12px">
                   <NButton size="medium" @click="() => create(index)">
-                    <icon-ic:round-plus class="text-icon" />
+                    <icon-ic-round-plus class="text-icon" />
                   </NButton>
                   <NButton size="medium" @click="() => remove(index)">
                     <icon-ic-round-remove class="text-icon" />
@@ -416,7 +278,7 @@ watch(
               <template #action="{ index, create, remove }">
                 <NSpace class="ml-12px">
                   <NButton size="medium" @click="() => create(index)">
-                    <icon-ic:round-plus class="text-icon" />
+                    <icon-ic-round-plus class="text-icon" />
                   </NButton>
                   <NButton size="medium" @click="() => remove(index)">
                     <icon-ic-round-remove class="text-icon" />

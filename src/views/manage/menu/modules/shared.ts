@@ -1,3 +1,5 @@
+import type { Model } from '@/views/manage/menu/modules/typing';
+
 const LAYOUT_PREFIX = 'layout.';
 const VIEW_PREFIX = 'view.';
 const FIRST_LEVEL_ROUTE_COMPONENT_SPLIT = '$';
@@ -76,4 +78,35 @@ export function getRoutePathWithParam(routePath: string, param: string) {
   }
 
   return routePath;
+}
+
+/**
+ * 创建默认的数据模型
+ */
+export function createDefaultModel(): Model {
+  return {
+    type: 'dir',
+    name: '',
+    routeName: '',
+    routePath: '',
+    pathParam: '',
+    component: '',
+    layout: '',
+    page: '',
+    i18nKey: null,
+    icon: '',
+    iconType: 'iconify',
+    parentId: '',
+    status: 'enable',
+    keepAlive: false,
+    constant: false,
+    sort: 0,
+    href: null,
+    hideInMenu: false,
+    activeMenu: null,
+    multiTab: false,
+    fixedIndexInTab: null,
+    query: [],
+    buttons: []
+  };
 }

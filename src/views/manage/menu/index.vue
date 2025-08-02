@@ -10,6 +10,8 @@ import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import SvgIcon from '@/components/custom/svg-icon.vue';
 import MenuOperateModal, { type OperateType } from './modules/menu-operate-modal.vue';
+import EnableStatus = CommonType.EnableStatus;
+import MenuType = Api.SystemManage.MenuType;
 
 const appStore = useAppStore();
 
@@ -46,9 +48,10 @@ const { columns, columnChecks, data, loading, pagination, getData, getDataByPage
           menu: 'primary'
         };
 
-        const label = menuTypeRecord[row.type];
+        const type = row.type as MenuType;
+        const label = menuTypeRecord[type];
 
-        return <NTag type={tagMap[row.type]}>{label}</NTag>;
+        return <NTag type={tagMap[type]}>{label}</NTag>;
       }
     },
     {
@@ -103,10 +106,10 @@ const { columns, columnChecks, data, loading, pagination, getData, getDataByPage
           enable: 'success',
           disable: 'warning'
         };
+        const enableStatus = row.status;
+        const label = enableStatusRecord[enableStatus];
 
-        const label = enableStatusRecord[row.status];
-
-        return <NTag type={tagMap[row.status]}>{label}</NTag>;
+        return <NTag type={tagMap[enableStatus]}>{label}</NTag>;
       }
     },
     {
@@ -147,7 +150,7 @@ const { columns, columnChecks, data, loading, pagination, getData, getDataByPage
       width: 230,
       render: row => (
         <div class="flex-center justify-end gap-8px">
-          {row.menuType === '1' && (
+          {row.type === 'dir' && (
             <NButton type="primary" ghost size="small" onClick={() => handleAddChildMenu(row)}>
               新增子菜单
             </NButton>
@@ -253,13 +256,6 @@ init();
         remote
         :pagination="pagination"
         class="sm:h-full"
-      />
-      <MenuOperateModal
-        v-model:visible="visible"
-        :operate-type="operateType"
-        :row-data="editingData"
-        :all-pages="allPages"
-        @submitted="getDataByPage"
       />
     </NCard>
   </div>

@@ -4,7 +4,7 @@ export const GLOBAL_HEADER_MENU_ID = '__GLOBAL_HEADER_MENU__';
 
 export const GLOBAL_SIDER_MENU_ID = '__GLOBAL_SIDER_MENU__';
 
-export const themeSchemaRecord: Record<UnionKey.ThemeScheme, App.I18n.I18nKey> = {
+export const themeSchemaRecord: Record<UnionKey.ThemeScheme, string> = {
   light: '亮色模式',
   dark: '暗黑模式',
   auto: '跟随系统'
@@ -12,7 +12,7 @@ export const themeSchemaRecord: Record<UnionKey.ThemeScheme, App.I18n.I18nKey> =
 
 export const themeSchemaOptions = transformRecordToOption(themeSchemaRecord);
 
-export const loginModuleRecord: Record<UnionKey.LoginModule, App.I18n.I18nKey> = {
+export const loginModuleRecord: Record<UnionKey.LoginModule, string> = {
   'pwd-login': '密码登录',
   'code-login': '验证码登录',
   register: '注册帐号',
@@ -20,7 +20,7 @@ export const loginModuleRecord: Record<UnionKey.LoginModule, App.I18n.I18nKey> =
   'bind-wechat': '绑定微信'
 };
 
-export const themeLayoutModeRecord: Record<UnionKey.ThemeLayoutMode, App.I18n.I18nKey> = {
+export const themeLayoutModeRecord: Record<UnionKey.ThemeLayoutMode, string> = {
   vertical: '左侧菜单模式',
   'vertical-mix': '左侧菜单混合模式',
   horizontal: '顶部菜单模式',
@@ -29,21 +29,21 @@ export const themeLayoutModeRecord: Record<UnionKey.ThemeLayoutMode, App.I18n.I1
 
 export const themeLayoutModeOptions = transformRecordToOption(themeLayoutModeRecord);
 
-export const themeScrollModeRecord: Record<UnionKey.ThemeScrollMode, App.I18n.I18nKey> = {
+export const themeScrollModeRecord: Record<UnionKey.ThemeScrollMode, string> = {
   wrapper: 'theme.scrollMode.wrapper',
   content: 'theme.scrollMode.content'
 };
 
 export const themeScrollModeOptions = transformRecordToOption(themeScrollModeRecord);
 
-export const themeTabModeRecord: Record<UnionKey.ThemeTabMode, App.I18n.I18nKey> = {
+export const themeTabModeRecord: Record<UnionKey.ThemeTabMode, string> = {
   chrome: '谷歌风格',
   button: '按钮风格'
 };
 
 export const themeTabModeOptions = transformRecordToOption(themeTabModeRecord);
 
-export const themePageAnimationModeRecord: Record<UnionKey.ThemePageAnimateMode, App.I18n.I18nKey> = {
+export const themePageAnimationModeRecord: Record<UnionKey.ThemePageAnimateMode, string> = {
   'fade-slide': '滑动',
   fade: '淡入淡出',
   'fade-bottom': '底部消息',
@@ -55,7 +55,7 @@ export const themePageAnimationModeRecord: Record<UnionKey.ThemePageAnimateMode,
 
 export const themePageAnimationModeOptions = transformRecordToOption(themePageAnimationModeRecord);
 
-export const resetCacheStrategyRecord: Record<UnionKey.ResetCacheStrategy, App.I18n.I18nKey> = {
+export const resetCacheStrategyRecord: Record<UnionKey.ResetCacheStrategy, string> = {
   close: '关闭页面',
   refresh: '刷新页面'
 };

@@ -28,15 +28,15 @@ declare namespace Api {
       /** record id */
       id: number;
       /** record creator */
-      createBy: string;
+      creatorId: string;
       /** record create time */
       createTime: string;
       /** record updater */
-      updateBy: string;
+      modifierId: string;
       /** record update time */
-      updateTime: string;
+      modifyTime: string;
       /** record status */
-      status: boolean | null;
+      status: CommonType.EnableStatus | null;
     } & T;
   }
 
@@ -101,9 +101,13 @@ declare namespace Api {
 
     type Menu = Common.CommonRecord<{
       /** parent menu id */
-      parentId: number;
+      parentId: string;
       /** menu type */
       type: MenuType;
+      /**
+       * 布局
+       */
+      layout: string;
       /** menu name */
       name: string;
       /** route name */
@@ -124,5 +128,10 @@ declare namespace Api {
       MenuPropsOfRoute;
 
     type MenuType = 'dir' | 'menu';
+
+    interface MenuButton {
+      code: string;
+      desc: string;
+    }
   }
 }
