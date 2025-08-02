@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { getMenuDetail, updateMenu } from '@/service/api';
 import MenuOperateModal from '@/views/manage/menu/modules/menu-operate-modal.vue';
 import { getLayoutAndPage, getPathParamFromRoutePath } from '@/views/manage/menu/modules/shared';
@@ -11,25 +11,25 @@ const { allPages, id } = defineProps<{
   id: string;
 }>();
 
-const visible = defineModel<boolean>({ default: false });
+const visible = defineModel<boolean>('visible', { default: false });
 
-const menuDetail = ref<Api.SystemManage.Menu | null>(null);
+const menuDetail = ref<Api.SystemManage.Menu | null>();
 
 const handleEditMenu = (menu: Partial<Api.SystemManage.Menu>) => {
   try {
     const { layout, page } = getLayoutAndPage(menuDetail.value?.component);
-    const { path, param } = getPathParamFromRoutePath(menuDetail.value?.routePath);
+    const { path, param } = getPathParamFromRoutePath(menuDetail.value?.routePath as string);
 
     updateMenu(id, { ...menu, layout, page, routePath: path, pathParam: param });
     emit('submitted');
+    visible.value = false;
     window.$message?.info('菜单更新成功');
   } catch {
     window.$message?.error('菜单更新失败');
   }
 };
 
-watch(visible, async value => {
-  if (!value) return;
+onMounted(async () => {
   const { data } = await getMenuDetail(id);
   menuDetail.value = data;
 });
@@ -37,10 +37,11 @@ watch(visible, async value => {
 
 <template>
   <MenuOperateModal
+    v-if="menuDetail"
     v-model:visible="visible"
     v-model:model="menuDetail"
     title="编辑菜单"
-    operate-type="edit"
+    :disabled-menu-type="true"
     :all-pages="allPages"
     @submitted="handleEditMenu"
   />

@@ -1,11 +1,10 @@
 <script setup lang="tsx">
-import { computed, ref, watch } from 'vue';
+import { computed, watch } from 'vue';
 import type { SelectOption } from 'naive-ui';
 import { enableStatusOptions, menuIconTypeOptions, menuTypeOptions } from '@/constants/business';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import { getLocalIcons } from '@/utils/icon';
 import SvgIcon from '@/components/custom/svg-icon.vue';
-import type { Model } from '@/views/manage/menu/modules/typing';
 import { layoutOptions } from '@/views/manage/menu/modules/typing';
 import {
   createDefaultModel,
@@ -32,15 +31,15 @@ const emit = defineEmits<{
 const visible = defineModel<boolean>('visible', {
   default: false
 });
-const model = defineModel<Model>('model', { required: true });
+const model = defineModel<Api.SystemManage.Menu>('model', { required: true });
 
 const { formRef, validate, restoreValidation } = useNaiveForm();
 const { defaultRequiredRule } = useFormRules();
 
-type RuleKey = Extract<keyof Model, 'name' | 'status' | 'routeName' | 'routePath'>;
+type RuleKey = Extract<keyof Api.SystemManage.Menu, 'label' | 'status' | 'routeName' | 'routePath'>;
 
 const rules: Record<RuleKey, App.Global.FormRule> = {
-  name: defaultRequiredRule,
+  label: defaultRequiredRule,
   status: defaultRequiredRule,
   routeName: defaultRequiredRule,
   routePath: defaultRequiredRule
@@ -57,7 +56,7 @@ const localIconOptions = localIcons.map<SelectOption>(item => ({
   value: item
 }));
 
-const showLayout = computed(() => !model.value.parentId);
+const showLayout = computed(() => model.value.parentId === '0');
 
 const showPage = computed(() => model.value.type === 'menu');
 
@@ -118,7 +117,7 @@ function handleCreateButton() {
 function getSubmitParams() {
   const { layout, page, pathParam, ...params } = model.value;
 
-  const component = transformLayoutAndPageToComponent(layout, page);
+  const component = transformLayoutAndPageToComponent(layout!, page);
   const routePath = getRoutePathWithParam(model.value.routePath, pathParam);
 
   params.component = component;
@@ -154,13 +153,13 @@ watch(
     <NScrollbar class="h-480px pr-20px">
       <NForm ref="formRef" :model="model" :rules="rules" label-placement="left" :label-width="100">
         <NGrid responsive="screen" item-responsive>
-          <NFormItemGi span="24 m:12" label="菜单类型" path="menuType">
+          <NFormItemGi span="24 m:12" label="菜单类型" path="type">
             <NRadioGroup v-model:value="model.type" :disabled="props.disabledMenuType">
               <NRadio v-for="item in menuTypeOptions" :key="item.value" :value="item.value" :label="item.label" />
             </NRadioGroup>
           </NFormItemGi>
-          <NFormItemGi span="24 m:12" label="菜单名称" path="menuName">
-            <NInput v-model:value="model.name" placeholder="请输入菜单名称" />
+          <NFormItemGi span="24 m:12" label="菜单名称" path="label">
+            <NInput v-model:value="model.label" placeholder="请输入菜单名称" />
           </NFormItemGi>
           <NFormItemGi span="24 m:12" label="路由名称" path="routeName">
             <NInput v-model:value="model.routeName" placeholder="请输入路由名称" />

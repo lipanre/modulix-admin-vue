@@ -26,7 +26,7 @@ declare namespace Api {
     /** common record */
     type CommonRecord<T = any> = {
       /** record id */
-      id: number;
+      id: string;
       /** record creator */
       creatorId: string;
       /** record create time */
@@ -107,9 +107,13 @@ declare namespace Api {
       /**
        * 布局
        */
-      layout: string;
+      layout?: string;
+
+      query: MenuQuery[];
+      page: string;
+      pathParam: string;
       /** menu name */
-      name: string;
+      label: string;
       /** route name */
       routeName: string;
       /** route path */
@@ -121,7 +125,7 @@ declare namespace Api {
       /** icon type */
       iconType: IconType;
       /** buttons */
-      buttons?: MenuButton[] | null;
+      buttons: MenuButton[] | undefined;
       /** children menu */
       children?: Menu[] | null;
     }> &
@@ -132,6 +136,11 @@ declare namespace Api {
     interface MenuButton {
       code: string;
       desc: string;
+    }
+
+    interface MenuQuery {
+      key: string;
+      value: string;
     }
   }
 }

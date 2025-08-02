@@ -73,7 +73,7 @@ export function getPathParamFromRoutePath(routePath: string) {
  * @param param path param
  */
 export function getRoutePathWithParam(routePath: string, param: string) {
-  if (param.trim()) {
+  if (param?.trim()) {
     return `${routePath}/:${param}`;
   }
 
@@ -83,10 +83,21 @@ export function getRoutePathWithParam(routePath: string, param: string) {
 /**
  * 创建默认的数据模型
  */
-export function createDefaultModel(): Model {
+export function createDefaultModel(): Api.SystemManage.Menu & {
+  query: NonNullable<Api.SystemManage.Menu['query']>;
+  buttons: NonNullable<Api.SystemManage.Menu['buttons']>;
+  layout: string;
+  page: string;
+  pathParam: string;
+} {
   return {
+    createTime: '',
+    creatorId: '',
+    id: '',
+    modifierId: '',
+    modifyTime: '',
     type: 'dir',
-    name: '',
+    label: '',
     routeName: '',
     routePath: '',
     pathParam: '',
@@ -96,7 +107,7 @@ export function createDefaultModel(): Model {
     i18nKey: null,
     icon: '',
     iconType: 'iconify',
-    parentId: '',
+    parentId: '0',
     status: 'enable',
     keepAlive: false,
     constant: false,

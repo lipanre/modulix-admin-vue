@@ -9,7 +9,7 @@ export type OperateType = NaiveUI.TableOperateType | 'addChild';
 export type Model = Pick<
   Api.SystemManage.Menu,
   | 'type'
-  | 'name'
+  | 'label'
   | 'routeName'
   | 'routePath'
   | 'component'

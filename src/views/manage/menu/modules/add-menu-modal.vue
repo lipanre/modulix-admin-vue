@@ -13,7 +13,7 @@ const { allPages } = defineProps<{
   allPages: string[];
 }>();
 
-const visible = defineModel<boolean>({ default: false });
+const visible = defineModel<boolean>('visible', { default: false });
 
 const model = ref<Model>(createDefaultModel());
 
@@ -27,6 +27,7 @@ const handleCreateMenu = async (menu: Partial<Api.SystemManage.Menu>) => {
     // 创建菜单
     await createMenu(menu);
     window.$message?.info('菜单创建成功');
+    visible.value = false;
     emit('submitted');
   } catch {
     window.$message?.error('菜单创建失败');

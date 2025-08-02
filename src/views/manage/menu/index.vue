@@ -1,21 +1,22 @@
 <script setup lang="tsx">
 import { ref } from 'vue';
-import type { Ref } from 'vue';
 import { NButton, NPopconfirm, NTag } from 'naive-ui';
 import { useBoolean } from '@sa/hooks';
 import { yesOrNoRecord } from '@/constants/common';
 import { enableStatusRecord, menuTypeRecord } from '@/constants/business';
-import { fetchGetMenuList } from '@/service/api';
+import { batchDeleteMenu, deleteMenu, fetchGetMenuList, listPage } from '@/service/api';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import SvgIcon from '@/components/custom/svg-icon.vue';
-import MenuOperateModal, { type OperateType } from './modules/menu-operate-modal.vue';
-import EnableStatus = CommonType.EnableStatus;
-import MenuType = Api.SystemManage.MenuType;
+import AddMenuModal from '@/views/manage/menu/modules/add-menu-modal.vue';
+import EditMenuModal from '@/views/manage/menu/modules/edit-menu-modal.vue';
+import AddChildMenuModal from '@/views/manage/menu/modules/add-child-menu-modal.vue';
 
 const appStore = useAppStore();
 
-const { bool: visible, setTrue: openModal } = useBoolean();
+const { bool: addVisible, setTrue: openAddModal } = useBoolean();
+const { bool: addChildVisible, setTrue: openAddChildModal } = useBoolean();
+const { bool: editVisible, setTrue: openEditModal } = useBoolean();
 
 const wrapperRef = ref<HTMLElement | null>(null);
 
@@ -33,9 +34,9 @@ const { columns, columnChecks, data, loading, pagination, getData, getDataByPage
     },
     {
       key: 'id',
-      title: 'ID',
       align: 'center',
-      minWidth: 370
+      width: 20,
+      render: _ => <div></div>
     },
     {
       key: 'type',
@@ -48,20 +49,20 @@ const { columns, columnChecks, data, loading, pagination, getData, getDataByPage
           menu: 'primary'
         };
 
-        const type = row.type as MenuType;
+        const type = row.type as Api.SystemManage.MenuType;
         const label = menuTypeRecord[type];
 
         return <NTag type={tagMap[type]}>{label}</NTag>;
       }
     },
     {
-      key: 'name',
+      key: 'label',
       title: '菜单名称',
       align: 'center',
       minWidth: 120,
       render: row => {
-        const { name } = row;
-        return <span>{name}</span>;
+        const { label } = row;
+        return <span>{label}</span>;
       }
     },
     {
@@ -84,13 +85,13 @@ const { columns, columnChecks, data, loading, pagination, getData, getDataByPage
       key: 'routeName',
       title: '路由名称',
       align: 'center',
-      minWidth: 120
+      minWidth: 90
     },
     {
-      key: 'path',
+      key: 'routePath',
       title: '路由路径',
       align: 'center',
-      minWidth: 120
+      minWidth: 80
     },
     {
       key: 'status',
@@ -129,12 +130,6 @@ const { columns, columnChecks, data, loading, pagination, getData, getDataByPage
 
         return <NTag type={tagMap[hide]}>{label}</NTag>;
       }
-    },
-    {
-      key: 'parentId',
-      title: '父级菜单ID',
-      width: 90,
-      align: 'center'
     },
     {
       key: 'sort',
@@ -176,51 +171,39 @@ const { columns, columnChecks, data, loading, pagination, getData, getDataByPage
 
 const { checkedRowKeys, onBatchDeleted, onDeleted } = useTableOperate(data, getData);
 
-const operateType = ref<OperateType>('add');
-
 function handleAdd() {
-  operateType.value = 'add';
-  openModal();
+  openAddModal();
 }
 
 async function handleBatchDelete() {
   // request
-  console.log(checkedRowKeys.value);
-
-  onBatchDeleted();
+  await batchDeleteMenu(checkedRowKeys.value);
+  await onBatchDeleted();
 }
 
-function handleDelete(id: number) {
+async function handleDelete(id: string) {
   // request
-  console.log(id);
-
-  onDeleted();
+  await deleteMenu(id);
+  await onDeleted();
 }
 
-/** the edit menu data or the parent menu data when adding a child menu */
-const editingData: Ref<Api.SystemManage.Menu | null> = ref(null);
+const currentRowId = ref<string>('');
 
 function handleEdit(item: Api.SystemManage.Menu) {
-  operateType.value = 'edit';
-  editingData.value = { ...item };
-
-  openModal();
+  currentRowId.value = item.id;
+  openEditModal();
 }
 
 function handleAddChildMenu(item: Api.SystemManage.Menu) {
-  operateType.value = 'addChild';
-
-  editingData.value = { ...item };
-
-  openModal();
+  currentRowId.value = item.id;
+  openAddChildModal();
 }
 
 const allPages = ref<string[]>([]);
 
 async function getAllPages() {
-  // const { data: pages } = await fetchGetAllPages();
-  // allPages.value = pages || [];
-  allPages.value = [];
+  const { data: pages } = await listPage();
+  allPages.value = pages || [];
 }
 
 function init() {
@@ -256,6 +239,25 @@ init();
         remote
         :pagination="pagination"
         class="sm:h-full"
+      />
+
+      <!--   新增菜单   -->
+      <AddMenuModal v-if="addVisible" v-model:visible="addVisible" :all-pages="allPages" @submitted="getDataByPage" />
+      <!--   新增子菜单   -->
+      <AddChildMenuModal
+        v-else-if="addChildVisible"
+        v-model:visible="addChildVisible"
+        :all-pages="allPages"
+        :parent-id="currentRowId"
+        @submitted="getDataByPage"
+      />
+      <!--   编辑菜单   -->
+      <EditMenuModal
+        v-else-if="editVisible"
+        :id="currentRowId"
+        v-model:visible="editVisible"
+        :all-pages="allPages"
+        @submitted="getDataByPage"
       />
     </NCard>
   </div>
