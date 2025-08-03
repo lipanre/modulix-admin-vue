@@ -144,6 +144,7 @@ declare namespace Api {
     }
 
     type DictDTO = {
+      id?: string;
       /* 父级菜单id */
       parentId?: string;
       /* 排序 */

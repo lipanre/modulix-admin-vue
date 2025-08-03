@@ -58,8 +58,8 @@ const submit = async () => {
     </NForm>
     <template #footer>
       <NFlex justify="end" :size="16">
-        <NButton @click="changeVisible(false)">取消</NButton>
-        <NButton type="primary" @click="submit">确认</NButton>
+        <NButton ghost @click="changeVisible(false)">取消</NButton>
+        <NButton ghost type="primary" @click="submit">确认</NButton>
       </NFlex>
     </template>
   </NModal>

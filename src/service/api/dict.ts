@@ -54,6 +54,19 @@ export const pageDict = (param: Api.Common.CommonSearchParams & Api.SystemManage
 };
 
 /**
+ * 分页查询字典列表
+ *
+ * @param param 查询参数
+ */
+export const listDict = (param: Api.SystemManage.DictQuery) => {
+  return request<Api.SystemManage.DictVO[]>({
+    url: '/dict',
+    method: 'GET',
+    params: param
+  });
+};
+
+/**
  * 查询指定字典详情
  *
  * @param id 字典ID
@@ -62,5 +75,22 @@ export const getDictDetail = (id: string) => {
   return request<Api.SystemManage.DictVO>({
     url: `/dict/${id}`,
     method: 'GET'
+  });
+};
+
+/**
+ * 更新、新增、删除字典明细
+ *
+ * @param removeIds 删除id列表
+ * @param details 更新或新增列表
+ */
+export const upsetDictDetail = (removeIds: string[], details: Api.SystemManage.DictDTO) => {
+  return request<boolean>({
+    url: '/dict/detail',
+    method: 'POST',
+    data: {
+      removeIds,
+      details
+    }
   });
 };
