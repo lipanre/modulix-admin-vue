@@ -42,7 +42,7 @@ const submit = async () => {
           <NInput v-model:value="model.code" placeholder="请输入字典编码" />
         </NFormItemGi>
         <NFormItemGi span="24 m:12" label="排序" path="sort">
-          <NInputNumber v-model:value="model.sort" placeholder="请输入字典排序号" />
+          <NInputNumber v-model:value="model.sort" class="w-full" placeholder="请输入字典排序号" />
         </NFormItemGi>
         <NFormItemGi span="24" label="描述" path="description">
           <NInput
