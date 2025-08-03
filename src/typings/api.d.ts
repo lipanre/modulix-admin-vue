@@ -142,5 +142,21 @@ declare namespace Api {
       key: string;
       value: string;
     }
+
+    type DictDTO = {
+      /* 父级菜单id */
+      parentId?: string;
+      /* 排序 */
+      sort: number;
+      /* 字典码 */
+      code: string;
+      /* 字典名 */
+      name: string;
+      /* 字典描述 */
+      description: string;
+    };
+
+    type DictVO = Common.CommonRecord<DictDTO>;
+    type DictQuery = Partial<DictVO>;
   }
 }

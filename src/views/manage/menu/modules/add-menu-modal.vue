@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import { createMenu } from '@/service/api';
 import MenuOperateModal from '@/views/manage/menu/modules/menu-operate-modal.vue';
-import type { Model } from '@/views/manage/menu/modules/typing';
 import { createDefaultModel } from '@/views/manage/menu/modules/shared';
 
 const emit = defineEmits<{
@@ -15,7 +14,7 @@ const { allPages } = defineProps<{
 
 const visible = defineModel<boolean>('visible', { default: false });
 
-const model = ref<Model>(createDefaultModel());
+const model = ref<Api.SystemManage.Menu>(createDefaultModel());
 
 /**
  * 创建菜单

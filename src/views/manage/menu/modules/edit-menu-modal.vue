@@ -17,8 +17,8 @@ const menuDetail = ref<Api.SystemManage.Menu | null>();
 
 const handleEditMenu = (menu: Partial<Api.SystemManage.Menu>) => {
   try {
-    const { layout, page } = getLayoutAndPage(menuDetail.value?.component);
-    const { path, param } = getPathParamFromRoutePath(menuDetail.value?.routePath as string);
+    const { layout, page } = getLayoutAndPage(menu?.component);
+    const { path, param } = getPathParamFromRoutePath(menu?.routePath as string);
 
     updateMenu(id, { ...menu, layout, page, routePath: path, pathParam: param });
     emit('submitted');

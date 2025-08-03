@@ -20,11 +20,11 @@ const { bool: editVisible, setTrue: openEditModal } = useBoolean();
 
 const wrapperRef = ref<HTMLElement | null>(null);
 
-const { columns, columnChecks, data, loading, pagination, getData, getDataByPage } = useTable({
+const { columns, columnChecks, data, loading, getData, getDataByPage } = useTable({
   apiFn: fetchGetMenuList,
   apiParams: {
-    current: 1,
-    size: -1
+    // current: 1,
+    // size: -1
   },
   columns: () => [
     {
@@ -237,7 +237,6 @@ init();
         :loading="loading"
         :row-key="row => row.id"
         remote
-        :pagination="pagination"
         class="sm:h-full"
       />
 

@@ -1,5 +1,3 @@
-import type { Model } from '@/views/manage/menu/modules/typing';
-
 const LAYOUT_PREFIX = 'layout.';
 const VIEW_PREFIX = 'view.';
 const FIRST_LEVEL_ROUTE_COMPONENT_SPLIT = '$';

@@ -5,7 +5,6 @@ import { enableStatusOptions, menuIconTypeOptions, menuTypeOptions } from '@/con
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import { getLocalIcons } from '@/utils/icon';
 import SvgIcon from '@/components/custom/svg-icon.vue';
-import { layoutOptions } from '@/views/manage/menu/modules/typing';
 import {
   createDefaultModel,
   getRoutePathByRouteName,
@@ -37,6 +36,20 @@ const { formRef, validate, restoreValidation } = useNaiveForm();
 const { defaultRequiredRule } = useFormRules();
 
 type RuleKey = Extract<keyof Api.SystemManage.Menu, 'label' | 'status' | 'routeName' | 'routePath'>;
+
+/**
+ * 布局选项
+ */
+const layoutOptions: CommonType.Option[] = [
+  {
+    label: 'base',
+    value: 'base'
+  },
+  {
+    label: 'blank',
+    value: 'blank'
+  }
+];
 
 const rules: Record<RuleKey, App.Global.FormRule> = {
   label: defaultRequiredRule,
