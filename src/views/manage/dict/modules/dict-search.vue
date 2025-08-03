@@ -1,5 +1,4 @@
 <script setup lang="tsx">
-import { ref } from 'vue';
 import { useNaiveForm } from '@/hooks/common/form';
 
 const { formRef } = useNaiveForm();
@@ -22,17 +21,17 @@ const search = async () => {
 
 <template>
   <NCard :bordered="false" size="small" class="card-wrapper">
-    <NCollapse :expanded-names="['dict-search']">
+    <NCollapse :default-expanded-names="['dict-search']">
       <NCollapseItem title="搜索" name="dict-search">
         <NForm ref="formRef" inline :model="model" label-width="80" label-placement="left">
           <NGrid responsive="screen" item-responsive>
-            <NFormItemGi span="24 s:12 m:8" label="字典名" path="name">
+            <NFormItemGi span="24 s:12 m:6" label="字典名" path="name">
               <NInput v-model:value="model.name" placeholder="请输入字典名" />
             </NFormItemGi>
-            <NFormItemGi span="24 s:12 m:8" label="字典编码" path="code">
+            <NFormItemGi span="24 s:12 m:6" label="字典编码" path="code">
               <NInput v-model:value="model.code" placeholder="请输入字典编码" />
             </NFormItemGi>
-            <NFormItemGi span="24 s:12 m:8">
+            <NFormItemGi span="24 s:12">
               <NFlex justify="end" class="w-full">
                 <NButton @click="reset">
                   <template #icon>

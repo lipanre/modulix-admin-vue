@@ -10,8 +10,6 @@ import DictSearch from '@/views/manage/dict/modules/dict-search.vue';
 import DictDetailDrawer from '@/views/manage/dict/modules/dict-detail-drawer.vue';
 import { useBoolean } from '~/packages/hooks';
 
-const dictStore = useDictStore();
-
 const { bool: createModalVisible, setTrue: openCreateModal } = useBoolean();
 const { bool: editModalVisible, setTrue: openEditModal } = useBoolean();
 const { bool: dictDetailVisible, setTrue: openDictDetailDrawer } = useBoolean();

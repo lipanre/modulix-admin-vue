@@ -18,7 +18,7 @@ declare namespace CommonType {
 
   type YesOrNo = 'Y' | 'N';
 
-  type EnableStatus = 'enable' | 'disable';
+  type EnableStatus = 'ENABLE' | 'DISABLE';
 
   /** add null to all properties */
   type RecordNullable<T> = {

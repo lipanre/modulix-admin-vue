@@ -99,7 +99,7 @@ export const upsetDictDetail = (removeIds: string[], details: Api.SystemManage.D
  * 查询所有字典
  */
 export const allDict = () => {
-  return request<CommonType.TreeNode<Api.SystemManage.DictVO>>({
+  return request<CommonType.TreeNode<Api.SystemManage.DictVO>[]>({
     url: '/dict/all',
     method: 'GET'
   });

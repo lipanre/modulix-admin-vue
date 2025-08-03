@@ -45,8 +45,8 @@ const { columns, columnChecks, data, loading, getData, getDataByPage } = useTabl
       width: 80,
       render: row => {
         const tagMap: Record<Api.SystemManage.MenuType, NaiveUI.ThemeColor> = {
-          dir: 'default',
-          menu: 'primary'
+          DIR: 'default',
+          MENU: 'primary'
         };
 
         const type = row.type as Api.SystemManage.MenuType;
@@ -71,8 +71,8 @@ const { columns, columnChecks, data, loading, getData, getDataByPage } = useTabl
       align: 'center',
       width: 60,
       render: row => {
-        const icon = row.iconType === 'iconify' ? row.icon : undefined;
-        const localIcon = row.iconType === 'local' ? row.icon : undefined;
+        const icon = row.iconType === 'ICONIFY' ? row.icon : undefined;
+        const localIcon = row.iconType === 'LOCAL' ? row.icon : undefined;
 
         return (
           <div class="flex-center">
@@ -104,8 +104,8 @@ const { columns, columnChecks, data, loading, getData, getDataByPage } = useTabl
         }
 
         const tagMap: Record<CommonType.EnableStatus, NaiveUI.ThemeColor> = {
-          enable: 'success',
-          disable: 'warning'
+          ENABLE: 'success',
+          DISABLE: 'warning'
         };
         const enableStatus = row.status;
         const label = enableStatusRecord[enableStatus];

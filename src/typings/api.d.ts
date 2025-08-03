@@ -81,9 +81,9 @@ declare namespace Api {
   }
 
   namespace SystemManage {
-    type UserGender = 'male' | 'female';
+    type UserGender = 'MALE' | 'FEMALE';
 
-    type IconType = 'iconify' | 'local';
+    type IconType = 'ICONIFY' | 'LOCAL';
 
     type MenuPropsOfRoute = Pick<
       import('vue-router').RouteMeta,
@@ -131,7 +131,7 @@ declare namespace Api {
     }> &
       MenuPropsOfRoute;
 
-    type MenuType = 'dir' | 'menu';
+    type MenuType = 'DIR' | 'MENU';
 
     interface MenuButton {
       code: string;
@@ -159,5 +159,27 @@ declare namespace Api {
 
     type DictVO = Common.CommonRecord<DictDTO>;
     type DictQuery = Partial<DictVO>;
+
+    type RoleDTO = {
+      /* 启用状态 */
+      status: CommonType.EnableStatus;
+      /* 角色名 */
+      name: string;
+      /* 角色编码 */
+      code: string;
+      /* 角色描述 */
+      description: string;
+      /* 数据权限 */
+      dataScope: string;
+      /* 首页 */
+      home: string;
+      /* 菜单id列表 */
+      menuIds: string[];
+      /* 自定义数据权限 部门列表 */
+      deptIds: string[];
+    };
+
+    type RoleVO = Common.CommonRecord<RoleDTO>;
+    type RoleQuery = Partial<RoleVO>;
   }
 }
