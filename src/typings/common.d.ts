@@ -24,4 +24,11 @@ declare namespace CommonType {
   type RecordNullable<T> = {
     [K in keyof T]?: T[K] | null;
   };
+
+  /**
+   * 树节点
+   */
+  type TreeNode<T> = {
+    children: T[];
+  } & T;
 }

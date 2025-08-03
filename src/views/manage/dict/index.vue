@@ -2,12 +2,15 @@
 import { ref } from 'vue';
 import { NButton, NTag } from 'naive-ui';
 import { deleteDict, pageDict } from '@/service/api/dict';
+import { useDictStore } from '@/store/modules/dict';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import CreateDictModal from '@/views/manage/dict/modules/create-dict-modal.vue';
 import EditDictModal from '@/views/manage/dict/modules/edit-dict-modal.vue';
 import DictSearch from '@/views/manage/dict/modules/dict-search.vue';
 import DictDetailDrawer from '@/views/manage/dict/modules/dict-detail-drawer.vue';
 import { useBoolean } from '~/packages/hooks';
+
+const dictStore = useDictStore();
 
 const { bool: createModalVisible, setTrue: openCreateModal } = useBoolean();
 const { bool: editModalVisible, setTrue: openEditModal } = useBoolean();
