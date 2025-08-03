@@ -177,6 +177,8 @@ declare namespace Api {
       menuIds: string[];
       /* 自定义数据权限 部门列表 */
       deptIds: string[];
+      /* 角色可操作的按钮列表 */
+      buttons: string[];
     };
 
     type RoleVO = Common.CommonRecord<RoleDTO>;

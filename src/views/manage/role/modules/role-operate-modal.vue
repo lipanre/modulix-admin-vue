@@ -95,6 +95,10 @@ onMounted(async () => {
             placeholder="请选择角色的菜单权限"
           />
         </NFormItemGi>
+
+        <NFormItemGi label="按钮权限" span="24" class="pr-24px">
+          <NSelect v-model:value="model.buttons" />
+        </NFormItemGi>
         <NFormItemGi span="24" label="角色描述">
           <NInput v-model:value="model.description" type="textarea" placeholder="请输入角色描述" />
         </NFormItemGi>
