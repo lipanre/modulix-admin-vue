@@ -145,7 +145,7 @@ const { columns, columnChecks, data, loading, getData, getDataByPage } = useTabl
       width: 230,
       render: row => (
         <div class="flex-center justify-end gap-8px">
-          {row.type === 'dir' && (
+          {row.type === 'DIR' && (
             <NButton type="primary" ghost size="small" onClick={() => handleAddChildMenu(row)}>
               新增子菜单
             </NButton>

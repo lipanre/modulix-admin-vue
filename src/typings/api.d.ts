@@ -183,5 +183,23 @@ declare namespace Api {
 
     type RoleVO = Common.CommonRecord<RoleDTO>;
     type RoleQuery = Partial<RoleVO>;
+
+    type DeptDTO = {
+      /* 上级部门id */
+      parentId?: string;
+      /* 部门名 */
+      name: string;
+      /* 排序 */
+      sort: number;
+      /* 负责人 */
+      chargePerson: string;
+      /* 联系电话 */
+      phone: string;
+      /* 邮箱 */
+      email: string;
+    };
+
+    type DeptVO = Common.CommonRecord<DeptDTO>;
+    type DeptQuery = Partial<DeptVO>;
   }
 }
