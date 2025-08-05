@@ -133,7 +133,7 @@ const handleAddRole = () => {
 </script>
 
 <template>
-  <div ref="wrapperRef" class="flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
+  <div>
     <RoleSearch v-model:query="searchParams" @reset="resetSearchParams" @search="getDataByPage" />
     <NCard title="角色列表" :bordered="false" size="small" class="mt-4 card-wrapper">
       <template #header-extra>
