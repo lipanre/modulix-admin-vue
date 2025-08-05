@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import { ref } from 'vue';
 import { NButton, NPopconfirm } from 'naive-ui';
-import { deleteDept, deptTree, listDept } from '@/service/api/dept';
+import { deleteDept, deptTree } from '@/service/api/dept';
 import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import CreateDeptModal from '@/views/manage/dept/modules/create-dept-modal.vue';

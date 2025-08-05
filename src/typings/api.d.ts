@@ -143,6 +143,11 @@ declare namespace Api {
       value: string;
     }
 
+    type MenuButtonVO = {
+      menuName: string;
+      buttons: MenuButton[];
+    };
+
     type DictDTO = {
       id?: string;
       /* 父级菜单id */

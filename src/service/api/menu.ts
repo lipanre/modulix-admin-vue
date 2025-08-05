@@ -87,3 +87,13 @@ export const listPage = () => {
     method: 'GET'
   });
 };
+
+/**
+ * 查询页面按钮列表
+ */
+export const listPageButton = () => {
+  return request<Api.SystemManage.MenuButtonVO[]>({
+    url: '/menu/page-buttons',
+    method: 'GET'
+  });
+};
