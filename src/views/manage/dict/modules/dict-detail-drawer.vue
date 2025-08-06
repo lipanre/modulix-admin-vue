@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { listDict, upsetDictDetail } from '@/service/api/dict';
 import SvgIcon from '@/components/custom/svg-icon.vue';
 

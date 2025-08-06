@@ -15,9 +15,9 @@ const emit = defineEmits<{
 
 const model = ref<Api.SystemManage.DictDTO>({
   sort: 0,
-  code: null,
-  name: null,
-  description: null
+  code: '',
+  name: '',
+  description: ''
 });
 
 const handleUpdate = async (dto: Api.SystemManage.DictDTO) => {
@@ -30,7 +30,12 @@ const handleUpdate = async (dto: Api.SystemManage.DictDTO) => {
 onMounted(async () => {
   // 查询字典详情
   const { data } = await getDictDetail(id);
-  model.value = data;
+  model.value = data || {
+    sort: 0,
+    code: '',
+    name: '',
+    description: ''
+  };
 });
 </script>
 

@@ -11,9 +11,9 @@ const emit = defineEmits<{
 
 const model = ref<Api.SystemManage.DictDTO>({
   sort: 0,
-  code: null,
-  name: null,
-  description: null
+  code: '',
+  name: '',
+  description: ''
 });
 
 const handleCreateDict = async (dto: Api.SystemManage.DictDTO) => {

@@ -1,5 +1,4 @@
 <script setup lang="tsx">
-import { ref } from 'vue';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 
 const formRules = useFormRules();

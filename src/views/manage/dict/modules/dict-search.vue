@@ -5,7 +5,7 @@ const { formRef } = useNaiveForm();
 
 const emit = defineEmits<{
   reset: [];
-  search: [query: Api.SystemManage.DictQuery];
+  search: [];
 }>();
 
 const model = defineModel<Api.SystemManage.DictQuery>('model', { required: true });

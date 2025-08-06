@@ -20,8 +20,8 @@ const { pagination, columns, columnChecks, loading, getData, data, getDataByPage
     apiParams: {
       size: 10,
       current: 1,
-      name: null,
-      code: null
+      name: undefined,
+      code: undefined
     },
     columns: () => [
       {
