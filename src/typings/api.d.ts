@@ -152,6 +152,8 @@ declare namespace Api {
       id?: string;
       /* 父级菜单id */
       parentId?: string;
+      /* 字典颜色 */
+      color?: string;
       /* 排序 */
       sort: number;
       /* 字典码 */

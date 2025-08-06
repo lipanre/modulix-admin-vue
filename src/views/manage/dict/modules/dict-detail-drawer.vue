@@ -1,6 +1,7 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import { computed, onMounted, ref } from 'vue';
 import { listDict, upsetDictDetail } from '@/service/api/dict';
+import SvgIcon from '@/components/custom/svg-icon.vue';
 
 const visible = defineModel<boolean>('visible', { required: true });
 const { parentId } = defineProps<{
@@ -9,6 +10,8 @@ const { parentId } = defineProps<{
 
 const details = ref<Api.SystemManage.DictDTO[]>([]);
 const removeIds = ref<string[]>([]);
+
+const colorPickerLabel = () => <SvgIcon icon="pepicons-pop:hash" />;
 
 const onCreate = () => {
   const dto: Api.SystemManage.DictDTO = createDefaultDictDetail();
@@ -60,16 +63,24 @@ onMounted(async () => {
         <template #create-button-default>添加字典明细</template>
         <template #default="{ value }">
           <NFlex justify="between" :wrap="false">
-            <NInput v-model:value="value.name" placeholder="字典明细名" />
-            <NInput v-model:value="value.code" placeholder="字典明细编码" />
+            <NInput v-model:value="value.name" :style="{ backgroundColor: value.color }" placeholder="字典明细名" />
+            <NInput v-model:value="value.code" :style="{ backgroundColor: value.color }" placeholder="字典明细编码">
+              <template #suffix>
+                <NColorPicker v-model:value="value.color" :modes="['hex']" :render-label="colorPickerLabel" />
+              </template>
+            </NInput>
           </NFlex>
         </template>
         <template #action="{ index, create, remove, value }">
           <NFlex justify="end" :wrap="false" class="ml-2">
-            <NButton size="medium" @click="() => create(index)">
+            <NButton size="medium" :style="{ backgroundColor: value.color }" @click="() => create(index)">
               <icon-ic-round-plus class="text-icon" />
             </NButton>
-            <NButton size="medium" @click="onRemove(value, () => remove(index))">
+            <NButton
+              size="medium"
+              :style="{ backgroundColor: value.color }"
+              @click="onRemove(value, () => remove(index))"
+            >
               <icon-ic-round-remove class="text-icon" />
             </NButton>
           </NFlex>
@@ -86,4 +97,8 @@ onMounted(async () => {
   </NDrawer>
 </template>
 
-<style scoped></style>
+<style scoped>
+:deep(.n-input__suffix) {
+  opacity: 0;
+}
+</style>
