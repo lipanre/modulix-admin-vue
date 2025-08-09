@@ -35,8 +35,6 @@ declare namespace Api {
       modifierId: string;
       /** record update time */
       modifyTime: string;
-      /** record status */
-      status: CommonType.EnableStatus | null;
     } & T;
   }
 
@@ -128,6 +126,8 @@ declare namespace Api {
       buttons: MenuButton[] | undefined;
       /** children menu */
       children?: Menu[] | null;
+      /** record status */
+      status?: CommonType.EnableStatus;
     }> &
       MenuPropsOfRoute;
 
@@ -186,6 +186,8 @@ declare namespace Api {
       deptIds: string[];
       /* 角色可操作的按钮列表 */
       buttons: string[];
+      /* 角色id列表 */
+      ids: string[];
     };
 
     type RoleVO = Common.CommonRecord<RoleDTO>;
@@ -208,5 +210,33 @@ declare namespace Api {
 
     type DeptVO = Common.CommonRecord<DeptDTO>;
     type DeptQuery = Partial<DeptVO>;
+
+    type UserDTO = {
+      /* 用户名 */
+      username: string | null;
+      /* 密码 */
+      password?: string;
+      /* 昵称 */
+      nickname: string | null;
+      /* 部门id */
+      deptId: string | null;
+      /* 电话号码 */
+      phone?: string;
+      /* 性别 */
+      gender: Api.SystemManage.UserGender | null;
+      /* 邮箱 */
+      email: string;
+      /* 启用状态 */
+      enable: CommonType.EnableStatus;
+      /* 首页 */
+      homeRoleId: string | null;
+      /* 角色id列表 */
+      roleIds: string[];
+    };
+
+    type UserVO = Common.CommonRecord<UserDTO> & {
+      deptName: string;
+    };
+    type UserQuery = Partial<UserVO>;
   }
 }

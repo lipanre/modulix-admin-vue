@@ -4,14 +4,16 @@ import type { SelectOption } from 'naive-ui';
 import { allDict } from '@/service/api/dict';
 
 export const useDictStore = defineStore('dictStore', () => {
-  const dictMapping = ref<Record<string, Record<string, string>>>({});
+  const dictMapping = ref<Record<string, Record<string, any>>>({});
+  const dictColorMapping = ref<Record<string, Record<string, any>>>({});
 
   const init = async () => {
     const { data } = await allDict();
-    dictMapping.value = data?.map(node => transform(node)).reduce(mergeDict);
+    dictMapping.value = data?.map(node => transformCode(node)).reduce(mergeDict) || {};
+    dictColorMapping.value = data?.map(node => transformColor(node)).reduce(mergeDict) || {};
   };
 
-  const transform = (node: CommonType.TreeNode<Api.SystemManage.DictVO>) => {
+  const transformCode = (node: CommonType.TreeNode<Api.SystemManage.DictVO>) => {
     return {
       [node.code]: {
         ...node.children?.map(child => ({ [child.code]: child.name })).reduce(mergeDict)
@@ -19,7 +21,15 @@ export const useDictStore = defineStore('dictStore', () => {
     };
   };
 
-  const mergeDict = (pre, current) => {
+  const transformColor = (node: CommonType.TreeNode<Api.SystemManage.DictVO>) => {
+    return {
+      [node.code]: {
+        ...node.children?.map(child => ({ [child.code]: child.color })).reduce(mergeDict)
+      }
+    };
+  };
+
+  const mergeDict = (pre: Record<string, any>, current: Record<string, any>) => {
     Object.keys(current).forEach(key => {
       pre[key] = current[key];
     });
@@ -32,8 +42,17 @@ export const useDictStore = defineStore('dictStore', () => {
    * @param code 字典code
    * @param detailCode 字典明细code
    */
-  const dictLabel = (code: string, detailCode: string) =>
+  const dictLabel = (code: string, detailCode: any) =>
     dictMapping.value[code] ? dictMapping.value[code][detailCode] : null;
+
+  /**
+   * 获取字典颜色
+   *
+   * @param code 字典码
+   * @param detailCode 字典明细码
+   */
+  const dictColor = (code: string, detailCode: any) =>
+    dictColorMapping.value[code] ? dictColorMapping.value[code][detailCode] : null;
 
   /**
    * 获取字典下拉选择选项
@@ -52,6 +71,7 @@ export const useDictStore = defineStore('dictStore', () => {
   return {
     dictMapping,
     dictLabel,
+    dictColor,
     dictOptions
   };
 });

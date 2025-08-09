@@ -54,6 +54,19 @@ export const pageRole = (query: Api.SystemManage.RoleQuery & Api.Common.Paginati
 };
 
 /**
+ * 分页查询角色列表
+ *
+ * @param query 查询条件
+ */
+export const listRole = (query?: Api.SystemManage.RoleQuery) => {
+  return request<Api.Common.CommonRecord<Api.SystemManage.RoleVO>[]>({
+    url: '/role',
+    method: 'GET',
+    params: query
+  });
+};
+
+/**
  * 获取角色详情
  *
  * @param id
