@@ -24,18 +24,18 @@ interface Props {
 const props = defineProps<Props>();
 
 const emit = defineEmits<{
-  submitted: [Partial<Api.SystemManage.Menu>];
+  submitted: [Partial<Api.SystemManage.MenuDTO>];
 }>();
 
 const visible = defineModel<boolean>('visible', {
   default: false
 });
-const model = defineModel<Api.SystemManage.Menu>('model', { required: true });
+const model = defineModel<Api.SystemManage.MenuDTO>('model', { required: true });
 
 const { formRef, validate, restoreValidation } = useNaiveForm();
 const { defaultRequiredRule } = useFormRules();
 
-type RuleKey = Extract<keyof Api.SystemManage.Menu, 'label' | 'status' | 'routeName' | 'routePath'>;
+type RuleKey = Extract<keyof Api.SystemManage.MenuDTO, 'label' | 'status' | 'routeName' | 'routePath'>;
 
 /**
  * 布局选项
@@ -71,7 +71,7 @@ const localIconOptions = localIcons.map<SelectOption>(item => ({
 
 const showLayout = computed(() => model.value.parentId === '0');
 
-const showPage = computed(() => model.value.type === 'menu');
+const showPage = computed(() => model.value.type === 'MENU');
 
 const pageOptions = computed(() => {
   const allPages = [...props.allPages];
@@ -120,9 +120,9 @@ function handleUpdateI18nKeyByRouteName() {
 }
 
 function handleCreateButton() {
-  const buttonItem: Api.SystemManage.MenuButton = {
+  const buttonItem: Api.SystemManage.ButtonDTO = {
     code: '',
-    desc: ''
+    name: ''
   };
   return buttonItem;
 }
@@ -145,6 +145,12 @@ async function handleSubmit() {
   emit('submitted', params);
 }
 
+const handleRemoveButton = (button: Api.SystemManage.ButtonDTO, callback: () => any) => {
+  if (button.id) {
+    model.value.deleteButtonIds.push(button.id);
+  }
+  callback();
+};
 watch(visible, () => {
   if (visible.value) {
     handleInitModel();
@@ -201,14 +207,14 @@ watch(
             </NRadioGroup>
           </NFormItemGi>
           <NFormItemGi span="24 m:12" label="图标" path="icon">
-            <template v-if="model.iconType === 'iconify'">
+            <template v-if="model.iconType === 'ICONIFY'">
               <NInput v-model:value="model.icon" placeholder="请输入图标" class="flex-1">
                 <template #suffix>
                   <SvgIcon v-if="model.icon" :icon="model.icon" class="text-icon" />
                 </template>
               </NInput>
             </template>
-            <template v-if="model.iconType === 'local'">
+            <template v-if="model.iconType === 'LOCAL'">
               <NSelect v-model:value="model.icon" placeholder="请选择本地图标" :options="localIconOptions" />
             </template>
           </NFormItemGi>
@@ -283,16 +289,16 @@ watch(
             <NDynamicInput v-model:value="model.buttons" :on-create="handleCreateButton">
               <template #default="{ value }">
                 <div class="ml-8px flex-y-center flex-1 gap-12px">
-                  <NInput v-model:value="value.code" placeholder="请输入按钮编码" class="flex-1" />
-                  <NInput v-model:value="value.desc" placeholder="请输入按钮描述" class="flex-1" />
+                  <NInput v-model:value="value.name" placeholder="请输入按钮名称" class="flex-1" />
+                  <NInput v-model:value="value.code" placeholder="请输入按钮权限码" class="flex-1" />
                 </div>
               </template>
-              <template #action="{ index, create, remove }">
+              <template #action="{ index, create, remove, value }">
                 <NSpace class="ml-12px">
                   <NButton size="medium" @click="() => create(index)">
                     <icon-ic-round-plus class="text-icon" />
                   </NButton>
-                  <NButton size="medium" @click="() => remove(index)">
+                  <NButton size="medium" @click="handleRemoveButton(value, () => remove(index))">
                     <icon-ic-round-remove class="text-icon" />
                   </NButton>
                 </NSpace>

@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { userDetail } from '@/service/api/user';
+import { updateUser, userDetail } from '@/service/api/user';
 import UserOperateModal from '@/views/manage/user/modules/user-operate-modal.vue';
 
 interface Props {
   id: string;
 }
+
+const emit = defineEmits<{
+  submitted: [];
+}>();
 
 const visible = defineModel<boolean>('visible', { required: true });
 
@@ -28,6 +32,12 @@ const createDefaultDTO = (): Api.SystemManage.UserDTO => {
 
 const model = ref<Api.SystemManage.UserDTO>(createDefaultDTO());
 
+const handleSubmitted = async () => {
+  await updateUser(id, model.value);
+  visible.value = false;
+  emit('submitted');
+};
+
 onMounted(async () => {
   const { data } = await userDetail(id);
   model.value = data || createDefaultDTO();
@@ -35,7 +45,13 @@ onMounted(async () => {
 </script>
 
 <template>
-  <UserOperateModal v-model:model="model" v-model:visible="visible" :hidden-password="true" title="编辑用户" />
+  <UserOperateModal
+    v-model:model="model"
+    v-model:visible="visible"
+    :hidden-password="true"
+    title="编辑用户"
+    @submitted="handleSubmitted"
+  />
 </template>
 
 <style scoped></style>

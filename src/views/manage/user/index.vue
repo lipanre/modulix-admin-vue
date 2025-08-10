@@ -188,7 +188,12 @@ const handleReset = async () => {
         @submitted="getDataByPage"
       />
 
-      <EditUserModal v-if="editUserModalVisible" :id="currentUserId" v-model:visible="editUserModalVisible" />
+      <EditUserModal
+        v-if="editUserModalVisible"
+        :id="currentUserId"
+        v-model:visible="editUserModalVisible"
+        @submitted="getDataByPage"
+      />
     </div>
   </NFlex>
 </template>

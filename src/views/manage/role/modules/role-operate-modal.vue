@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import type { SelectGroupOption } from 'naive-ui';
+import { onMounted, ref, watch } from 'vue';
+import type { SelectGroupOption, SelectOption } from 'naive-ui';
 import { fetchGetMenuList, listPage, listPageButton } from '@/service/api';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 
@@ -16,7 +16,7 @@ const { title } = defineProps<{
 
 const pages = ref<SelectOption[]>([]);
 
-const menuTree = ref<Api.SystemManage.Menu>([]);
+const menuTree = ref<Api.SystemManage.MenuVO[]>([]);
 const pageButtonsOptions = ref<SelectGroupOption[]>([]);
 
 const { formRef, validate } = useNaiveForm();
@@ -25,7 +25,7 @@ const { defaultRequiredRule } = useFormRules();
 const rules: Record<keyof typeof model.value, App.Global.FormRule> = {
   name: defaultRequiredRule,
   code: defaultRequiredRule,
-  enable: defaultRequiredRule
+  status: defaultRequiredRule
 };
 
 const changeVisible = (value: boolean) => {
@@ -39,33 +39,46 @@ const submit = async () => {
 
 const loadPages = async () => {
   const { data } = await listPage();
-  pages.value = data.map(page => ({
-    label: page,
-    value: page
-  }));
+  pages.value =
+    data?.map(page => ({
+      label: page,
+      value: page
+    })) || [];
 };
 
 const loadPageTree = async () => {
   const { data } = await fetchGetMenuList();
-  menuTree.value = data;
+  menuTree.value = data || [];
 };
 
-const loadPageButtons = async () => {
-  const { data } = await listPageButton();
-  pageButtonsOptions.value = data?.map(transformGroupOption);
+const loadPageButtons = async (menuIds: string[]) => {
+  const { data } = await listPageButton({ menuIds });
+  model.value.buttonIds =
+    data
+      ?.flatMap(menuButton => menuButton.buttons)
+      .map(button => button.id)
+      .filter(id => model.value.buttonIds?.includes(id)) || [];
+  pageButtonsOptions.value = data?.map(transformGroupOption) || [];
 };
 
-const transformGroupOption = (pageButton: Api.SystemManage.MenuButtonVO) => {
+const transformGroupOption = (pageButton: Api.SystemManage.MenuButtonVO): SelectGroupOption => {
   return {
     type: 'group',
-    desc: pageButton.menuName,
+    name: pageButton.menuName,
     buttons: pageButton.buttons
   };
 };
 
 const init = async () => {
-  await Promise.all([loadPages(), loadPageTree(), loadPageButtons()]);
+  await Promise.all([loadPages(), loadPageTree()]);
 };
+
+watch(
+  () => model.value.menuIds,
+  async value => {
+    await loadPageButtons(value);
+  }
+);
 
 onMounted(async () => {
   await init();
@@ -111,13 +124,13 @@ onMounted(async () => {
 
         <NFormItemGi label="按钮权限" span="24" class="pr-24px">
           <NSelect
-            v-model:value="model.buttons"
+            v-model:value="model.buttonIds"
             multiple
             clearable
             filterable
             children-field="buttons"
-            label-field="desc"
-            value-field="code"
+            label-field="name"
+            value-field="id"
             :options="pageButtonsOptions"
           />
         </NFormItemGi>

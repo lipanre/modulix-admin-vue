@@ -13,7 +13,22 @@ const emit = defineEmits<{
 
 const visible = defineModel<boolean>('visible', { required: true });
 
-const model = ref<Api.SystemManage.RoleDTO>({});
+function createDefault() {
+  return {
+    buttons: [],
+    code: '',
+    dataScope: '',
+    deptIds: [],
+    description: '',
+    home: '',
+    ids: [],
+    menuIds: [],
+    name: '',
+    status: null
+  };
+}
+
+const model = ref<Api.SystemManage.RoleDTO>(createDefault());
 
 const handleSubmitted = async () => {
   await updateRole(id, model.value);
@@ -23,7 +38,7 @@ const handleSubmitted = async () => {
 
 onMounted(async () => {
   const { data } = await getRoleDetail(id);
-  model.value = data;
+  model.value = data || createDefault();
 });
 </script>
 

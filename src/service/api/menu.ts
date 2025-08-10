@@ -8,8 +8,8 @@ export const fetchGetAllPages = () => {};
 /**
  * 获取菜单树
  */
-export const fetchGetMenuList = (query: Api.Common.CommonSearchParams) => {
-  return request<Api.Common.PaginatingQueryRecord<Api.Common.CommonRecord<Api.SystemManage.Menu>>>({
+export const fetchGetMenuList = (query?: Api.SystemManage.MenuQuery) => {
+  return request<Api.SystemManage.MenuVO[]>({
     url: '/menu/tree',
     params: query
   });
@@ -19,7 +19,7 @@ export const fetchGetMenuList = (query: Api.Common.CommonSearchParams) => {
  * 新增菜单
  * @param dto 菜单dto
  */
-export const createMenu = (dto: Partial<Api.SystemManage.Menu>) => {
+export const createMenu = (dto: Partial<Api.SystemManage.MenuDTO>) => {
   return request<boolean>({
     url: '/menu',
     method: 'POST',
@@ -33,7 +33,7 @@ export const createMenu = (dto: Partial<Api.SystemManage.Menu>) => {
  * @param id 菜单id
  * @param dto 菜单dto
  */
-export const updateMenu = (id: string, dto: Partial<Api.SystemManage.Menu>) => {
+export const updateMenu = (id: string, dto: Partial<Api.SystemManage.MenuDTO>) => {
   return request<boolean>({
     url: `/menu/${id}`,
     method: 'PUT',
@@ -47,7 +47,7 @@ export const updateMenu = (id: string, dto: Partial<Api.SystemManage.Menu>) => {
  * @param id 菜单id
  */
 export const getMenuDetail = (id: string) => {
-  return request<Api.SystemManage.Menu>({
+  return request<Api.SystemManage.MenuDTO>({
     url: `/menu/${id}`,
     method: 'GET'
   });
@@ -91,9 +91,10 @@ export const listPage = () => {
 /**
  * 查询页面按钮列表
  */
-export const listPageButton = () => {
+export const listPageButton = (query?: Api.SystemManage.MenuQuery) => {
   return request<Api.SystemManage.MenuButtonVO[]>({
-    url: '/menu/page-buttons',
-    method: 'GET'
+    url: '/menu/button',
+    method: 'GET',
+    params: query
   });
 };

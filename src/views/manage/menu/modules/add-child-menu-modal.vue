@@ -13,9 +13,9 @@ const { allPages, parentId } = defineProps<{
 
 const visible = defineModel<boolean>('visible', { default: false });
 
-const menuDetail = ref<Api.SystemManage.Menu | null>(createDefaultModel());
+const menuDetail = ref<Api.SystemManage.MenuDTO | null>(createDefaultModel());
 
-const handleEditMenu = (menu: Partial<Api.SystemManage.Menu>) => {
+const handleEditMenu = (menu: Partial<Api.SystemManage.MenuDTO>) => {
   try {
     createMenu({ ...menu, parentId });
     emit('submitted');

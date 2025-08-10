@@ -13,9 +13,9 @@ const { allPages, id } = defineProps<{
 
 const visible = defineModel<boolean>('visible', { default: false });
 
-const menuDetail = ref<Api.SystemManage.Menu | null>();
+const menuDetail = ref<Api.SystemManage.MenuDTO | null>();
 
-const handleEditMenu = (menu: Partial<Api.SystemManage.Menu>) => {
+const handleEditMenu = (menu: Partial<Api.SystemManage.MenuDTO>) => {
   try {
     const { layout, page } = getLayoutAndPage(menu?.component);
     const { path, param } = getPathParamFromRoutePath(menu?.routePath as string);
@@ -32,6 +32,9 @@ const handleEditMenu = (menu: Partial<Api.SystemManage.Menu>) => {
 onMounted(async () => {
   const { data } = await getMenuDetail(id);
   menuDetail.value = data;
+  if (menuDetail.value) {
+    menuDetail.value.deleteButtonIds = [];
+  }
 });
 </script>
 

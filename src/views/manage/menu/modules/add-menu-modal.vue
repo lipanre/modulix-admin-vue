@@ -14,14 +14,14 @@ const { allPages } = defineProps<{
 
 const visible = defineModel<boolean>('visible', { default: false });
 
-const model = ref<Api.SystemManage.Menu>(createDefaultModel());
+const model = ref<Api.SystemManage.MenuDTO>(createDefaultModel());
 
 /**
  * 创建菜单
  *
  * @param menu 菜单对象
  */
-const handleCreateMenu = async (menu: Partial<Api.SystemManage.Menu>) => {
+const handleCreateMenu = async (menu: Partial<Api.SystemManage.MenuDTO>) => {
   try {
     // 创建菜单
     await createMenu(menu);

@@ -97,7 +97,7 @@ declare namespace Api {
       | 'query'
     >;
 
-    type Menu = Common.CommonRecord<{
+    type MenuDTO = {
       /** parent menu id */
       parentId: string;
       /** menu type */
@@ -107,7 +107,7 @@ declare namespace Api {
        */
       layout?: string;
 
-      query: MenuQuery[];
+      query: Query[];
       page: string;
       pathParam: string;
       /** menu name */
@@ -123,30 +123,40 @@ declare namespace Api {
       /** icon type */
       iconType: IconType;
       /** buttons */
-      buttons: MenuButton[] | undefined;
+      buttons?: ButtonDTO[] | null;
       /** children menu */
-      children?: Menu[] | null;
+      children?: MenuDTO[] | null;
       /** record status */
       status?: CommonType.EnableStatus;
-    }> &
-      MenuPropsOfRoute;
+      /* 移除的按钮id列表 */
+      deleteButtonIds: string[];
+    } & MenuPropsOfRoute;
 
-    type MenuType = 'DIR' | 'MENU';
-
-    interface MenuButton {
-      code: string;
-      desc: string;
-    }
-
-    interface MenuQuery {
-      key: string;
-      value: string;
-    }
+    type MenuVO = Api.Common.CommonRecord<ButtonDTO>;
+    type MenuQuery = Partial<Api.SystemManage.MenuVO> & {
+      menuIds: string[];
+    };
 
     type MenuButtonVO = {
       menuName: string;
-      buttons: MenuButton[];
+      buttons: ButtonVO[];
     };
+
+    type MenuType = 'DIR' | 'MENU';
+
+    type ButtonDTO = {
+      id?: string | null;
+      name: string;
+      code: string;
+      menuId?: string | null;
+    };
+
+    type ButtonVO = Api.Common.CommonRecord<ButtonDTO>;
+
+    interface Query {
+      key: string;
+      value: string;
+    }
 
     type DictDTO = {
       id?: string;
@@ -169,7 +179,7 @@ declare namespace Api {
 
     type RoleDTO = {
       /* 启用状态 */
-      status: CommonType.EnableStatus;
+      status: CommonType.EnableStatus | null;
       /* 角色名 */
       name: string;
       /* 角色编码 */
@@ -185,7 +195,7 @@ declare namespace Api {
       /* 自定义数据权限 部门列表 */
       deptIds: string[];
       /* 角色可操作的按钮列表 */
-      buttons: string[];
+      buttonIds: string[];
       /* 角色id列表 */
       ids: string[];
     };

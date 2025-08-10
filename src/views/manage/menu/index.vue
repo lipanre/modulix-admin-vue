@@ -189,12 +189,12 @@ async function handleDelete(id: string) {
 
 const currentRowId = ref<string>('');
 
-function handleEdit(item: Api.SystemManage.Menu) {
+function handleEdit(item: Api.SystemManage.MenuDTO) {
   currentRowId.value = item.id;
   openEditModal();
 }
 
-function handleAddChildMenu(item: Api.SystemManage.Menu) {
+function handleAddChildMenu(item: Api.SystemManage.MenuDTO) {
   currentRowId.value = item.id;
   openAddChildModal();
 }
