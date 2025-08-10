@@ -101,7 +101,9 @@ onMounted(async () => {
         <NFormItemGi label="数据权限" path="dataScope" span="24 s:12" class="pr-24px">
           <DictSelect v-model:value="model.dataScope" code="DATA_SCOPE" />
         </NFormItemGi>
-        <NFormItemGi v-if="model.dataScope === 'CUSTOMIZE'" label="自定义部门" span="24" class="pr-24px"></NFormItemGi>
+        <NFormItemGi v-if="model.dataScope === 'CUSTOMIZE'" label="自定义部门" span="24" class="pr-24px">
+          <DeptTreeSelect v-model:value="model.deptIds" multiple placeholder="请选择自定义部门" />
+        </NFormItemGi>
         <NFormItemGi label="首页" path="home" span="24 s:12" class="pr-24px">
           <NSelect v-model:value="model.home" :options="pages" />
         </NFormItemGi>
