@@ -81,12 +81,30 @@ export function getRoutePathWithParam(routePath: string, param: string) {
 /**
  * 创建默认的数据模型
  */
-export function createDefaultModel(): Api.SystemManage.MenuDTO & {
-  query: NonNullable<Api.SystemManage.MenuDTO['query']>;
-  buttons: NonNullable<Api.SystemManage.MenuDTO['buttons']>;
+export function createDefaultModel(): {
+  type: string;
+  label: string;
+  routeName: string;
+  routePath: string;
+  pathParam: string;
+  component: string;
   layout: string;
   page: string;
-  pathParam: string;
+  i18nKey: null;
+  icon: string;
+  iconType: string;
+  parentId: string;
+  status: string;
+  keepAlive: boolean;
+  constant: boolean;
+  sort: number;
+  href: null;
+  hideInMenu: boolean;
+  activeMenu: null;
+  multiTab: boolean;
+  fixedIndexInTab: null;
+  query: any[];
+  buttons: any[];
 } {
   return {
     type: 'DIR',

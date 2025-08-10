@@ -99,7 +99,7 @@ declare namespace Api {
 
     type MenuDTO = {
       /** parent menu id */
-      parentId: string;
+      parentId: string | number;
       /** menu type */
       type: MenuType;
       /**

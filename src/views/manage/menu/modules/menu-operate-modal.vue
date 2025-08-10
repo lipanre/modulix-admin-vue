@@ -69,7 +69,7 @@ const localIconOptions = localIcons.map<SelectOption>(item => ({
   value: item
 }));
 
-const showLayout = computed(() => model.value.parentId === '0');
+const showLayout = computed(() => model.value.parentId === 0);
 
 const showPage = computed(() => model.value.type === 'MENU');
 
