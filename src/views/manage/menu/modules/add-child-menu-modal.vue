@@ -13,7 +13,33 @@ const { allPages, parentId } = defineProps<{
 
 const visible = defineModel<boolean>('visible', { default: false });
 
-const menuDetail = ref<Api.SystemManage.MenuDTO | null>(createDefaultModel());
+const menuDetail = ref<Api.SystemManage.MenuDTO | null>({
+  activeMenu: undefined,
+  buttons: [],
+  children: undefined,
+  component: '',
+  constant: undefined,
+  deleteButtonIds: [],
+  fixedIndexInTab: undefined,
+  hideInMenu: undefined,
+  href: undefined,
+  i18nKey: undefined,
+  icon: '',
+  iconType: 'ICONIFY',
+  keepAlive: undefined,
+  label: '',
+  layout: '',
+  multiTab: undefined,
+  page: '',
+  parentId,
+  pathParam: '',
+  query: [],
+  routeName: '',
+  routePath: '',
+  sort: undefined,
+  status: undefined,
+  type: 'DIR'
+});
 
 const handleEditMenu = (menu: Partial<Api.SystemManage.MenuDTO>) => {
   try {

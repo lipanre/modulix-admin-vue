@@ -123,7 +123,7 @@ declare namespace Api {
       /** icon type */
       iconType: IconType;
       /** buttons */
-      buttons?: ButtonDTO[] | null;
+      buttons?: ButtonDTO[];
       /** children menu */
       children?: MenuDTO[] | null;
       /** record status */

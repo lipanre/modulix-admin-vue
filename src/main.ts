@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import './plugins/assets';
+import { setupDirective } from '@/directives';
 import { setupAppVersionNotification, setupDayjs, setupIconifyOffline, setupLoading, setupNProgress } from './plugins';
 import { setupStore } from './store';
 import { setupRouter } from './router';
@@ -24,6 +25,8 @@ async function setupApp() {
   setupI18n(app);
 
   setupAppVersionNotification();
+
+  setupDirective(app);
 
   app.mount('#app');
 }

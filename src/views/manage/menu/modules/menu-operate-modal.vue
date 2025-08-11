@@ -5,12 +5,7 @@ import { enableStatusOptions, menuIconTypeOptions, menuTypeOptions } from '@/con
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
 import { getLocalIcons } from '@/utils/icon';
 import SvgIcon from '@/components/custom/svg-icon.vue';
-import {
-  createDefaultModel,
-  getRoutePathByRouteName,
-  getRoutePathWithParam,
-  transformLayoutAndPageToComponent
-} from './shared';
+import { getRoutePathByRouteName, getRoutePathWithParam, transformLayoutAndPageToComponent } from './shared';
 
 interface Props {
   /** all pages */
@@ -88,17 +83,6 @@ const pageOptions = computed(() => {
   return opts;
 });
 
-function handleInitModel() {
-  model.value = createDefaultModel();
-
-  if (!model.value.query) {
-    model.value.query = [];
-  }
-  if (!model.value.buttons) {
-    model.value.buttons = [];
-  }
-}
-
 function closeDrawer() {
   visible.value = false;
 }
@@ -153,7 +137,6 @@ const handleRemoveButton = (button: Api.SystemManage.ButtonDTO, callback: () => 
 };
 watch(visible, () => {
   if (visible.value) {
-    handleInitModel();
     restoreValidation();
   }
 });
