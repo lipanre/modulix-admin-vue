@@ -2,7 +2,7 @@ import { computed, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { defineStore } from 'pinia';
 import { useLoading } from '@sa/hooks';
-import {fetchGetUserInfo, fetchLogin, handleLogout} from '@/service/api';
+import { fetchGetUserInfo, fetchLogin, handleLogout } from '@/service/api';
 import { useRouterPush } from '@/hooks/common/router';
 import { localStg } from '@/utils/storage';
 import { SetupStoreId } from '@/enum';
@@ -25,7 +25,8 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
     id: '',
     username: '',
     roles: [],
-    buttons: []
+    buttons: [],
+    superAdmin: false
   });
 
   /** is super role in static route */
@@ -134,7 +135,7 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
     localStg.set('refreshToken', loginToken.refreshToken);
     localStg.set('clientId', loginToken.clientId);
     localStg.set('header', loginToken.header);
-    localStg.set('expire', loginToken.expire)
+    localStg.set('expire', loginToken.expire);
 
     // 2. get user info
     const pass = await getUserInfo();
