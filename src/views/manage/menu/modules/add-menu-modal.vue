@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import { createMenu } from '@/service/api';
 import MenuOperateModal from '@/views/manage/menu/modules/menu-operate-modal.vue';
-import { createDefaultModel } from '@/views/manage/menu/modules/shared';
 
 const emit = defineEmits<{
   submitted: [];
@@ -14,7 +13,28 @@ const { allPages } = defineProps<{
 
 const visible = defineModel<boolean>('visible', { default: false });
 
-const model = ref<Api.SystemManage.MenuDTO>(createDefaultModel());
+const model = ref<Api.SystemManage.MenuDTO>({
+  activeMenu: undefined,
+  constant: undefined,
+  deleteButtonIds: [],
+  fixedIndexInTab: undefined,
+  hideInMenu: undefined,
+  href: undefined,
+  i18nKey: undefined,
+  icon: '',
+  iconType: 'ICONIFY',
+  keepAlive: undefined,
+  label: '',
+  multiTab: undefined,
+  page: '',
+  parentId: 0,
+  pathParam: '',
+  query: [],
+  routeName: '',
+  routePath: '',
+  sort: undefined,
+  type: 'DIR'
+});
 
 /**
  * 创建菜单
