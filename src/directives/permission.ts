@@ -1,7 +1,10 @@
 import type { ObjectDirective } from '@vue/runtime-core';
+import type { Record } from 'immutable';
 import { useAuthStore } from '@/store/modules/auth';
 
 type PermissionArg = 'role' | 'button';
+
+let authArgCondition: any;
 
 export const permission: ObjectDirective<any, string, any, PermissionArg> = {
   mounted(el, binding) {
@@ -11,10 +14,12 @@ export const permission: ObjectDirective<any, string, any, PermissionArg> = {
       return;
     }
 
-    const authArgCondition: Record<PermissionArg, (value: string) => boolean> = {
-      role: value => authStore.userInfo.roles.includes(value),
-      button: value => authStore.userInfo.buttons.includes(value)
-    };
+    if (!authArgCondition) {
+      authArgCondition = {
+        role: (value: string) => authStore.userInfo.roles.includes(value),
+        button: (value: string) => authStore.userInfo.buttons.includes(value)
+      };
+    }
 
     const { value, arg } = binding;
 
